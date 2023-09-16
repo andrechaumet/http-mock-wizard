@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="releases" />
+      <option name="name" value="releases" />
+      <option name="url" value="http://10.167.152.15:8002/repository/internal/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="ICM Repository" />
+      <option name="name" value="ICM Repository" />
+      <option name="url" value="http://maven.icm.edu.pl/artifactory/repo/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="OpenNMS" />
+      <option name="name" value="OpenNMS" />
+      <option name="url" value="https://repo.opennms.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="JBoss Releases" />
+      <option name="name" value="JBoss Releases" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/releases" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Google Repository" />
+      <option name="name" value="Google Repository" />
+      <option name="url" value="https://maven.google.com/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="snapshots" />
+      <option name="name" value="snapshots" />
+      <option name="url" value="http://10.167.152.15:8002/repository/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Spring milestones" />
+      <option name="name" value="Spring milestones" />
+      <option name="url" value="https://repo.spring.io/milestone/" />
+    </remote-repository>
+  </component>
+</project>
