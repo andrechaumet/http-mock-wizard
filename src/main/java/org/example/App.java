@@ -3,6 +3,7 @@ package org.example;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.example.mocks.repository.impl.MocksFilesRepositoryImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +14,11 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public class App {
+
+    private static final MocksFilesRepositoryImpl fileHander = new MocksFilesRepositoryImpl();
+
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8083), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(8084), 0);
         server.createContext("/", new MocksHandler());
 
         server.start();
@@ -30,9 +34,12 @@ public class App {
                 System.out.println(httpMethod + " " + uri);
                 System.out.println(body);
                 exchange.getRequestHeaders().values().forEach(System.out::println);
+/*
                 final String responseBody = activeMocksHandler(uri);
-                exchange.sendResponseHeaders(200, responseBody.getBytes().length);
-                exchange.getResponseBody().write(responseBody.getBytes());
+*/
+                fileHander.findByUri(uri);
+/*                exchange.sendResponseHeaders(200, responseBody.getBytes().length);
+                exchange.getResponseBody().write(responseBody.getBytes());*/
                 exchange.close();
                 System.out.println("------RESPONSE SENT------");
             } catch (IOException e) {
@@ -42,10 +49,10 @@ public class App {
         }
     }
 
-    private static String activeMocksHandler(final String uri) throws IOException {
+    /*private static String activeMocksHandler(final String uri) throws IOException {
         final String basePath = "C:/Users/Andy/Desktop/test/active-mocks";
-/*        final File file = new File(basePath + uri);
-        if(file.isDirectory()) {*/
+*//*        final File file = new File(basePath + uri);
+        if(file.isDirectory()) {*//*
         try {
 
             BufferedReader reader = Files.newBufferedReader(Paths.get(basePath + uri +"/200.txt/"));
@@ -55,11 +62,11 @@ public class App {
             System.out.println(e.getMessage());
             throw e;
         }
-        /*        }
-         */
-        /*        return null;*/
+        *//*        }
+         *//*
+        *//*        return null;*//*
     }
-
+*/
     private static String extractBody(InputStream body) throws IOException {
         StringBuilder requestBodyBuilder = new StringBuilder();
         int bytesRead;
