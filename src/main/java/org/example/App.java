@@ -3,15 +3,13 @@ package org.example;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.example.mocks.files.HttpResponse;
 import org.example.mocks.repository.impl.MocksFilesRepositoryImpl;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class App {
 
@@ -20,7 +18,6 @@ public class App {
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8084), 0);
         server.createContext("/", new MocksHandler());
-
         server.start();
     }
 
@@ -37,7 +34,8 @@ public class App {
 /*
                 final String responseBody = activeMocksHandler(uri);
 */
-                fileHander.findByUri(uri);
+                final Optional<HttpResponse> byUri = fileHander.findByUri(uri);
+                byUri.;
 /*                exchange.sendResponseHeaders(200, responseBody.getBytes().length);
                 exchange.getResponseBody().write(responseBody.getBytes());*/
                 exchange.close();
@@ -49,24 +47,6 @@ public class App {
         }
     }
 
-    /*private static String activeMocksHandler(final String uri) throws IOException {
-        final String basePath = "C:/Users/Andy/Desktop/test/active-mocks";
-*//*        final File file = new File(basePath + uri);
-        if(file.isDirectory()) {*//*
-        try {
-
-            BufferedReader reader = Files.newBufferedReader(Paths.get(basePath + uri +"/200.txt/"));
-            return reader.lines().collect(Collectors.joining());
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        }
-        *//*        }
-         *//*
-        *//*        return null;*//*
-    }
-*/
     private static String extractBody(InputStream body) throws IOException {
         StringBuilder requestBodyBuilder = new StringBuilder();
         int bytesRead;
