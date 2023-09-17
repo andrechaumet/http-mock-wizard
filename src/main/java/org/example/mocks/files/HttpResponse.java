@@ -1,13 +1,14 @@
 package org.example.mocks.files;
 
 import java.util.List;
+import java.util.Map;
 
 public class HttpResponse {
     private String httpStatusCode;
+    private Map<String, List<String>> headers;
     private String body;
-    private List<String> headers;
 
-    public String getHttpStatusCode() {
+    public String httpStatusCode() {
         return httpStatusCode;
     }
 
@@ -15,7 +16,7 @@ public class HttpResponse {
         this.httpStatusCode = httpStatusCode;
     }
 
-    public String getBody() {
+    public String body() {
         return body;
     }
 
@@ -23,11 +24,11 @@ public class HttpResponse {
         this.body = body;
     }
 
-    public List<String> getHeaders() {
+    public Map<String, List<String>> headers() {
         return headers;
     }
 
-    public void setHeaders(List<String> headers) {
+    public void setHeaders(Map<String, List<String>> headers) {
         this.headers = headers;
     }
 }
