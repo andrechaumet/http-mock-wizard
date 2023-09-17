@@ -19,44 +19,24 @@ public class MocksFilesRepositoryImpl implements MocksRepository {
 
     @Override
     public Optional<HttpResponse> findByUri(String uri) {
-        try {
-            System.out.println("FILE PATH SELECTED: " + BASE_PATH + uri + "/200.txt/");
-            BufferedReader reader = Files.newBufferedReader(Paths.get(BASE_PATH + uri + "/200.txt/"));
-/*            reader.lines().collect(Collectors.joining());*/
-            buildResponse(reader.lines());
-            return null;
-        } catch (IOException e) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(BASE_PATH + uri + "/200.txt/"));) {
+            reader.lines();
+        } catch (IOException ex) {
             return Optional.empty();
         }
-    }
-
-    private static String activeMocksHandler(final String uri) throws IOException {
         return null;
     }
 
-    private static String extractBody(InputStream body) throws IOException {
-        StringBuilder requestBodyBuilder = new StringBuilder();
-        int bytesRead;
-        byte[] buffer = new byte[1024];
-        while ((bytesRead = body.read(buffer)) != -1) {
-            requestBodyBuilder.append(new String(buffer, 0, bytesRead));
-        }
-        return requestBodyBuilder.toString();
-    }
-
     private HttpResponse buildResponse(Stream<String> lines) {
-        System.out.println("-----HEADERS-----");
+        HttpResponse httpResponse = new HttpResponse();
         final List<String> headers = lines
-/*
-                .peek(System.out::println)
-*/
                 .filter(line -> !line.contains("\"") && !line.contains("{") && !line.contains("}"))
-                .peek(System.out::println)
                 .collect(Collectors.toList());
-/*
-        headers.forEach(System.out::println);
-*/
-        System.out.println("-----HEADERS-----");
+        final String body = lines
+                .filter(line -> line.contains("\"") || line.contains("{") || line.contains("}"))
+                .collect(Collectors.joining());
+        httpResponse.setHeaders(headers);
+        httpResponse.setBody(body);
         return null;
     }
 }
