@@ -1,8 +1,17 @@
-package org.example.mocks.files;
+package org.example.model;
 
 public class MockFile {
+    private String path;
     private HttpRequest key;
     private HttpResponse value;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public HttpRequest getKey() {
         return key;

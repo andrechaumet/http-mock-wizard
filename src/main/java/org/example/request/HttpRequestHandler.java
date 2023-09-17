@@ -2,8 +2,8 @@ package org.example.request;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.example.mocks.files.HttpRequest;
-import org.example.mocks.files.HttpResponse;
+import org.example.model.HttpRequest;
+import org.example.model.HttpResponse;
 import org.example.service.impl.MockServiceImpl;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class HttpRequestHandler implements HttpHandler {
 
-    private MockServiceImpl service = new MockServiceImpl();
+    private final MockServiceImpl service = new MockServiceImpl();
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -24,18 +24,16 @@ public class HttpRequestHandler implements HttpHandler {
             final String httpMethod = exchange.getRequestMethod();
             final String body = extractBody(exchange.getRequestBody());
             final Map<String, List<String>> headers = exchange.getRequestHeaders();
-
             //CREATES REQUEST
             final HttpRequest request = new HttpRequest();
-            request.setPath(path);
             request.setHttpMethod(httpMethod);
             request.setRequiredBody(body);
             request.setRequiredHeaders(headers);
-
             //IF VALUE, RETURNS RESPONSE
-            final HttpResponse response = service.test(request);
+            final HttpResponse response = service.mock(path, request);
             if (response == null) {
-                System.out.println("ERRROOORRRR");
+                exchange.sendResponseHeaders(404, 0);
+                exchange.close();
             } else {
                 OutputStream os = exchange.getResponseBody();
                 String responseBody = response.getBody();
@@ -50,6 +48,8 @@ public class HttpRequestHandler implements HttpHandler {
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("------ERROR------");
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
         }
     }
 

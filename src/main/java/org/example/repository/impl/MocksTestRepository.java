@@ -1,9 +1,9 @@
-package org.example.mocks.repository.impl;
+package org.example.repository.impl;
 
-import org.example.mocks.files.HttpRequest;
-import org.example.mocks.files.HttpResponse;
-import org.example.mocks.files.MockFile;
-import org.example.mocks.repository.MocksRepository;
+import org.example.model.HttpRequest;
+import org.example.model.HttpResponse;
+import org.example.model.MockFile;
+import org.example.repository.MocksRepository;
 
 import java.util.*;
 
@@ -13,7 +13,7 @@ public class MocksTestRepository implements MocksRepository {
         MockFile mockFile = new MockFile();
         mockFile.setKey(createKey());
         mockFile.setValue(createValue());
-        if (path.equals(mockFile.getKey().getPath())) {
+        if (path.equals(mockFile.getPath())) {
             System.out.println("PATHS MATCH");
             return Optional.of(mockFile);
         } else {
@@ -22,14 +22,8 @@ public class MocksTestRepository implements MocksRepository {
         }
     }
 
-    @Override
-    public Optional<MockFile> findByRequest(HttpRequest httpRequest) {
-        return Optional.empty();
-    }
-
     public HttpRequest createKey() {
         HttpRequest httpRequest = new HttpRequest();
-        httpRequest.setPath("/test-route");
         httpRequest.setHttpMethod("GET");
         httpRequest.setRequiredHeaders(testHeaders());
         httpRequest.setRequiredBody(testBody());
@@ -46,7 +40,7 @@ public class MocksTestRepository implements MocksRepository {
 
     private String testBody() {
         return "{\n" +
-                "  \"firstName\": \"John\",\n" +
+                "  \"firstNameeeeeeee\": \"John\",\n" +
                 "  \"lastName\": \"Doe\",\n" +
                 "  \"age\": 30,\n" +
                 "  \"email\": \"john.doe@example.com\",\n" +

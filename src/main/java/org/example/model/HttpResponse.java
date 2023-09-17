@@ -1,4 +1,4 @@
-package org.example.mocks.files;
+package org.example.model;
 
 import java.util.List;
 import java.util.Map;

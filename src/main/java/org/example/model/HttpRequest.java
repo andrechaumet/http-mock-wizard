@@ -1,22 +1,13 @@
-package org.example.mocks.files;
+package org.example.model;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class HttpRequest {
-    private String path;
     private String httpMethod;
     private Map<String, List<String>> requiredHeaders;
     private String requiredBody;
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public String getHttpMethod() {
         return httpMethod;
@@ -54,13 +45,12 @@ public class HttpRequest {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPath(), getHttpMethod(), getRequiredHeaders(), getRequiredBody());
+        return Objects.hash(getHttpMethod(), getRequiredHeaders(), getRequiredBody());
     }
 
     @Override
     public String toString() {
         return "HttpRequest{" +
-                "path='" + path + '\'' +
                 ", httpMethod='" + httpMethod + '\'' +
                 ", requiredHeaders=" + requiredHeaders +
                 ", requiredBody='" + requiredBody + '\'' +
