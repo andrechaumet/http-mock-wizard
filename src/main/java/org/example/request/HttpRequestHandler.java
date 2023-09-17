@@ -20,7 +20,7 @@ public class HttpRequestHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         try {
             //EXTRACTS VALUES
-            final String path = exchange.getRequestURI().toString();
+            final String path = formatPath(exchange.getRequestURI().toString());
             final String httpMethod = exchange.getRequestMethod();
             final String body = extractBody(exchange.getRequestBody());
             final Map<String, List<String>> headers = exchange.getRequestHeaders();
@@ -37,10 +37,15 @@ public class HttpRequestHandler implements HttpHandler {
             } else {
                 OutputStream os = exchange.getResponseBody();
                 String responseBody = response.getBody();
+                for (Map<String, List<String> dsa : response.getHeaders().) {
+
+                }
+                for (Map.Entry<String, List<String>> asd : response.getHeaders().entrySet()) {
+                    exchange.getResponseHeaders().add("asd", "asd");
+                }
                 exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
                 os.write(responseBody.getBytes());
                 os.close();
-                exchange.getResponseHeaders().add("asd", "asd");
                 exchange.close();
             }
 
@@ -51,6 +56,10 @@ public class HttpRequestHandler implements HttpHandler {
             exchange.sendResponseHeaders(500, 0);
             exchange.close();
         }
+    }
+
+    private String formatPath(String path) {
+        return path.replaceFirst("/", "");
     }
 
     private String extractBody(final InputStream body) throws IOException {

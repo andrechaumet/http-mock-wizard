@@ -11,6 +11,7 @@ public class MocksTestRepository implements MocksRepository {
     @Override
     public Optional<MockFile> findByPath(String path) {
         MockFile mockFile = new MockFile();
+        mockFile.setPath("test-route");
         mockFile.setKey(createKey());
         mockFile.setValue(createValue());
         if (path.equals(mockFile.getPath())) {
