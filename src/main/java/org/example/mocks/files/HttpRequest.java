@@ -44,14 +44,26 @@ public class HttpRequest {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        /*if (this == o) return true;
         if (!(o instanceof HttpRequest)) return false;
         HttpRequest that = (HttpRequest) o;
         return Objects.equals(getPath(), that.getPath()) && Objects.equals(getHttpMethod(), that.getHttpMethod()) && Objects.equals(getRequiredHeaders(), that.getRequiredHeaders()) && Objects.equals(getRequiredBody(), that.getRequiredBody());
+*/
+        return o.toString().equals(this.toString());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getPath(), getHttpMethod(), getRequiredHeaders(), getRequiredBody());
+    }
+
+    @Override
+    public String toString() {
+        return "HttpRequest{" +
+                "path='" + path + '\'' +
+                ", httpMethod='" + httpMethod + '\'' +
+                ", requiredHeaders=" + requiredHeaders +
+                ", requiredBody='" + requiredBody + '\'' +
+                '}';
     }
 }

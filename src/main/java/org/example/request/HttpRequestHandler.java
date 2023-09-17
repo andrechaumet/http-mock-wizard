@@ -8,6 +8,7 @@ import org.example.service.impl.MockServiceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,18 @@ public class HttpRequestHandler implements HttpHandler {
             request.setRequiredHeaders(headers);
 
             //IF VALUE, RETURNS RESPONSE
-            final HttpResponse test = service.test(request);
+            final HttpResponse response = service.test(request);
+            if (response == null) {
+                System.out.println("ERRROOORRRR");
+            } else {
+                OutputStream os = exchange.getResponseBody();
+                String responseBody = response.getBody();
+                exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
+                os.write(responseBody.getBytes());
+                os.close();
+                exchange.getResponseHeaders().add("asd", "asd");
+                exchange.close();
+            }
 
 
         } catch (IOException e) {

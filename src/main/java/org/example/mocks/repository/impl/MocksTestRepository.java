@@ -11,8 +11,8 @@ public class MocksTestRepository implements MocksRepository {
     @Override
     public Optional<MockFile> findByPath(String path) {
         MockFile mockFile = new MockFile();
-        mockFile.setKey(createRequest());
-        mockFile.setValue(createResponse());
+        mockFile.setKey(createKey());
+        mockFile.setValue(createValue());
         if (path.equals(mockFile.getKey().getPath())) {
             System.out.println("PATHS MATCH");
             return Optional.of(mockFile);
@@ -27,20 +27,21 @@ public class MocksTestRepository implements MocksRepository {
         return Optional.empty();
     }
 
-    public HttpRequest createRequest() {
+    public HttpRequest createKey() {
         HttpRequest httpRequest = new HttpRequest();
-        httpRequest.setPath("test-route");
+        httpRequest.setPath("/test-route");
         httpRequest.setHttpMethod("GET");
         httpRequest.setRequiredHeaders(testHeaders());
         httpRequest.setRequiredBody(testBody());
         return httpRequest;
     }
 
-    private HttpResponse createResponse() {
+    private HttpResponse createValue() {
         HttpResponse httpResponse = new HttpResponse();
         httpResponse.setHeaders(testHeaders());
         httpResponse.setBody(testBody());
         httpResponse.setHttpStatusCode("200");
+        return httpResponse;
     }
 
     private String testBody() {
