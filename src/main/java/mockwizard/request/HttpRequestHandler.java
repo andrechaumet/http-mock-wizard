@@ -2,6 +2,7 @@ package mockwizard.request;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import mockwizard.model.Body;
 import mockwizard.model.Header;
 import mockwizard.model.HttpRequest;
 import mockwizard.model.HttpResponse;
@@ -75,11 +76,6 @@ public class HttpRequestHandler implements HttpHandler {
             final Map<String, List<String>> headers = exchange.getRequestHeaders();
             //CREATES REQUEST
             final HttpRequest request = convertToModel(exchange);
-/*
-            request.setHttpMethod(httpMethod);
-*/
-            request.setRequiredBody(body);
-            request.setHeaders(headers);
             //IF VALUE, RETURNS RESPONSE
             final HttpResponse response = service.mock(path, request, httpMethod);
             if (response == null) {
@@ -107,10 +103,25 @@ public class HttpRequestHandler implements HttpHandler {
     private HttpRequest convertToModel(HttpExchange exchange) throws IOException {
         final String body = extractBody(exchange.getRequestBody());
         final Map<String, List<String>> headers = exchange.getRequestHeaders();
-        final HttpRequest model = new HttpRequest();
-        model.setRequiredBody(body);
 
-        model.setHeaders();
+        HttpRequest model = new HttpRequest();
+
+        final Body bodyObject = new Body();
+        bodyObject.setValue(body);
+
+        model.setHeaders(formatHeaders(headers));
+        model.setBody(bodyObject);
+        return model;
+    }
+
+    private List<Header> formatHeaders(final Map<String, List<String>> headers) {
+        List<Header> headersFormatted = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            Header header = new Header();
+            header.setKey(entry.getKey());
+            header.addValue(entry.getValue());
+        }
+        return headersFormatted;
     }
 
     private String formatPath(String path) {

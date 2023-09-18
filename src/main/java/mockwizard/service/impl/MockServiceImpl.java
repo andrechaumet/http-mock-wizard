@@ -13,6 +13,8 @@ import java.util.Optional;
 public class MockServiceImpl implements MockService {
 
     private final MocksRepository repository = new MocksTxtFilesRepository();
+    //TODO:
+    private final RequestComparator requestComparator = new RequestComparator();
 
     public HttpResponse mock(final String path, final HttpRequest request, final String method) throws IOException {
         final Optional<MockFile> mockFileOptional = repository.findByPathAndMethod(path, method);
@@ -20,6 +22,7 @@ public class MockServiceImpl implements MockService {
             System.out.println("MOCK FILE FOUND");
         }
         return mockFileOptional
+                .filter(found -> requestComparator.compare(request, found.getKey()))
                 .map(MockFile::getValue)
                 .orElse(null);
     }

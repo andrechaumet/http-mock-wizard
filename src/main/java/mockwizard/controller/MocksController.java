@@ -1,5 +1,6 @@
 package mockwizard.controller;
 
+import mockwizard.model.Body;
 import mockwizard.model.HttpRequest;
 import mockwizard.model.HttpResponse;
 import mockwizard.model.MockFile;
@@ -31,14 +32,54 @@ public class MocksController {
 
     //TODO:
     @GetMapping
-    public List<MockFile> findALL() throws IOException {
+    public List<MockFile> findAll() throws IOException {
         return null;
     }
 
-    @GetMapping
-    public List<MockFile> findByPath(final String path) {
-        return null;
+    //TODO: DELETE LATER, ONLY FOR POSTMAN TESTS
+    @GetMapping("/example")
+    public MockFile exampleDeleteLater() {
+        MockFile mockFile = new MockFile();
+        mockFile.setPath("test");
+        mockFile.setMethod("post");
+
+        final HttpRequest httpRequest = new HttpRequest();
+        final Body body = new Body();
+        body.setRequired(true);
+        body.setValue("completar:completar");
+        httpRequest.setBody(body);
+        //--
+        mockFile.setKey(httpRequest);
+
+        final HttpResponse httpResponse = new HttpResponse();
+        httpResponse.setHttpStatusCode("201");
+        httpResponse.setBody(body.getValue());
+        httpResponse.setHeaders(test());
+        //--
+        mockFile.setValue(httpResponse);
+        return mockFile;
     }
-
-
+    //TODO: DELETE LATER, ONLY FOR POSTMAN TESTS
+    private Map<String, List<String>> test() {
+        Map<String, List<String>> headers = new HashMap<>();
+        addValue(headers, "Clave1", "Valor1A");
+        addValue(headers, "Clave1", "Valor1B");
+        addValue(headers, "Clave2", "Valor2A");
+        addValue(headers, "Clave3", "Valor3A");
+        addValue(headers, "Clave3", "Valor3B");
+        return headers;
+    }
+    //TODO: DELETE LATER, ONLY FOR POSTMAN TESTS
+    private void addValue(Map<String, List<String>> mapa, String clave, String valor) {
+        if (mapa.containsKey(clave)) {
+            mapa.get(clave).add(valor);
+        } else {
+            List<String> nuevaLista = new ArrayList<>();
+            nuevaLista.add(valor);
+            mapa.put(clave, nuevaLista);
+        }
+    }
 }
+
+
+
