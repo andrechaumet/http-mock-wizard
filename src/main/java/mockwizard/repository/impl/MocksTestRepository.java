@@ -1,15 +1,16 @@
-package org.example.repository.impl;
+/*
+package mockwizard.repository.impl;
 
-import org.example.model.HttpRequest;
-import org.example.model.HttpResponse;
-import org.example.model.MockFile;
-import org.example.repository.MocksRepository;
+import mockwizard.model.MockFile;
+import mockwizard.model.HttpRequest;
+import mockwizard.model.HttpResponse;
+import mockwizard.repository.MocksRepository;
 
 import java.util.*;
 
 public class MocksTestRepository implements MocksRepository {
     @Override
-    public Optional<MockFile> findByPath(String path) {
+    public Optional<MockFile> findByPathAndMethod(final String path, final String method) {
         MockFile mockFile = new MockFile();
         mockFile.setPath("test-route");
         mockFile.setKey(createKey());
@@ -23,10 +24,14 @@ public class MocksTestRepository implements MocksRepository {
         }
     }
 
+    @Override
+    public void save(MockFile mockFile) {
+
+    }
+
     public HttpRequest createKey() {
         HttpRequest httpRequest = new HttpRequest();
-        httpRequest.setHttpMethod("GET");
-        httpRequest.setRequiredHeaders(testHeaders());
+        httpRequest.setHeaders(testHeaders());
         httpRequest.setRequiredBody(testBody());
         return httpRequest;
     }
@@ -71,3 +76,4 @@ public class MocksTestRepository implements MocksRepository {
     }
 
 }
+*/

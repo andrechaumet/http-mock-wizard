@@ -1,14 +1,16 @@
-package org.example.request;
+package mockwizard.request;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.example.model.HttpRequest;
-import org.example.model.HttpResponse;
-import org.example.service.impl.MockServiceImpl;
+import mockwizard.model.Header;
+import mockwizard.model.HttpRequest;
+import mockwizard.model.HttpResponse;
+import mockwizard.service.impl.MockServiceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +20,14 @@ public class HttpRequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        try {
+        Thread newThread = new Thread(() -> {
+            try {
+                handleAsync(exchange);
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        newThread.start();        /*try {
             //EXTRACTS VALUES
             final String path = formatPath(exchange.getRequestURI().toString());
             final String httpMethod = exchange.getRequestMethod();
@@ -48,14 +57,60 @@ public class HttpRequestHandler implements HttpHandler {
                 os.close();
                 exchange.close();
             }
-
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.out.println("------ERROR------");
             exchange.sendResponseHeaders(500, 0);
             exchange.close();
+        }*/
+    }
+
+    //TODO: Store in the mock files how much delay I want the response to return.
+    private void handleAsync(HttpExchange exchange) throws IOException, InterruptedException {
+        try {
+            //EXTRACTS VALUES
+            final String path = formatPath(exchange.getRequestURI().toString());
+            final String httpMethod = exchange.getRequestMethod();
+            final String body = extractBody(exchange.getRequestBody());
+            final Map<String, List<String>> headers = exchange.getRequestHeaders();
+            //CREATES REQUEST
+            final HttpRequest request = convertToModel(exchange);
+/*
+            request.setHttpMethod(httpMethod);
+*/
+            request.setRequiredBody(body);
+            request.setHeaders(headers);
+            //IF VALUE, RETURNS RESPONSE
+            final HttpResponse response = service.mock(path, request, httpMethod);
+            if (response == null) {
+                exchange.sendResponseHeaders(404, 0);
+                exchange.close();
+            } else {
+                OutputStream os = exchange.getResponseBody();
+                String responseBody = response.getBody();
+                exchange.getResponseHeaders().add("asd", "asd");
+                exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
+                os.write(responseBody.getBytes());
+                os.close();
+                exchange.close();
+            }
+
+
+        } catch (IOException e) {
+            exchange.sendResponseHeaders(500, 0);
+            exchange.close();
+        } finally {
         }
+
+    }
+
+    private HttpRequest convertToModel(HttpExchange exchange) throws IOException {
+        final String body = extractBody(exchange.getRequestBody());
+        final Map<String, List<String>> headers = exchange.getRequestHeaders();
+        final HttpRequest model = new HttpRequest();
+        model.setRequiredBody(body);
+
+        model.setHeaders();
     }
 
     private String formatPath(String path) {

@@ -1,10 +1,11 @@
-package org.example.model;
+package mockwizard.model;
 
 import java.util.List;
 import java.util.Map;
 
 public class HttpResponse {
     private String httpStatusCode;
+    //TODO: Create "Header" object to store "Boolean required" and Values List<String>
     private Map<String, List<String>> headers;
     private String body;
 

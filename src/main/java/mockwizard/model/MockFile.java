@@ -1,7 +1,8 @@
-package org.example.model;
+package mockwizard.model;
 
 public class MockFile {
     private String path;
+    private String method;
     private HttpRequest key;
     private HttpResponse value;
 
@@ -11,6 +12,14 @@ public class MockFile {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     public HttpRequest getKey() {

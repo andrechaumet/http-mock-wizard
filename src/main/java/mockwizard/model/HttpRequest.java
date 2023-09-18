@@ -1,28 +1,18 @@
-package org.example.model;
+package mockwizard.model;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class HttpRequest {
-    private String httpMethod;
-    private Map<String, List<String>> requiredHeaders;
+    private List<Header> headers;
     private String requiredBody;
 
-    public String getHttpMethod() {
-        return httpMethod;
+    public List<Header> getHeaders() {
+        return headers;
     }
 
-    public void setHttpMethod(String httpMethod) {
-        this.httpMethod = httpMethod;
-    }
-
-    public Map<String, List<String>> getRequiredHeaders() {
-        return requiredHeaders;
-    }
-
-    public void setRequiredHeaders(Map<String, List<String>> requiredHeaders) {
-        this.requiredHeaders = requiredHeaders;
+    public void setHeaders(List<Header> headers) {
+        this.headers = headers;
     }
 
     public String getRequiredBody() {
@@ -45,14 +35,13 @@ public class HttpRequest {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getHttpMethod(), getRequiredHeaders(), getRequiredBody());
+        return Objects.hash(getHeaders(), getRequiredBody());
     }
 
     @Override
     public String toString() {
         return "HttpRequest{" +
-                ", httpMethod='" + httpMethod + '\'' +
-                ", requiredHeaders=" + requiredHeaders +
+                ", requiredHeaders=" + headers +
                 ", requiredBody='" + requiredBody + '\'' +
                 '}';
     }

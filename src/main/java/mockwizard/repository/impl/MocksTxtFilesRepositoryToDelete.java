@@ -1,9 +1,9 @@
 /*
 package org.example.repository.impl;
 
-import org.example.model.HttpRequest;
-import org.example.model.HttpResponse;
-import org.example.repository.MocksRepository;
+import model.mockwizard.HttpRequest;
+import model.mockwizard.HttpResponse;
+import repository.mockwizard.MocksRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
