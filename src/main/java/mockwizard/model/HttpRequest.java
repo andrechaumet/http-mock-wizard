@@ -21,4 +21,12 @@ public class HttpRequest {
     public void setBody(Body body) {
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "HttpRequest{" +
+                "headers=" + headers +
+                ", body=" + body +
+                '}';
+    }
 }

@@ -1,21 +1,14 @@
 package mockwizard.controller;
 
-import mockwizard.model.Body;
-import mockwizard.model.HttpRequest;
-import mockwizard.model.HttpResponse;
 import mockwizard.model.MockFile;
 import mockwizard.repository.MocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-@RestController
-@RequestMapping()
+@RestController()
+@RequestMapping("/mocks")
 public class MocksController {
 
     private final MocksRepository mocksRepository;
@@ -25,12 +18,13 @@ public class MocksController {
         this.mocksRepository = mocksRepository;
     }
 
-    @PostMapping
-    public void createMock(@RequestBody MockFile mockFile) throws IOException {
+    @PostMapping()
+    public String createMock(@RequestBody MockFile mockFile) throws IOException {
         mocksRepository.save(mockFile);
+        return null;
     }
 
-    //TODO:
+    /*//TODO:
     @GetMapping
     public List<MockFile> findAll() throws IOException {
         return null;
@@ -78,7 +72,7 @@ public class MocksController {
             nuevaLista.add(valor);
             mapa.put(clave, nuevaLista);
         }
-    }
+    }*/
 }
 
 

@@ -44,22 +44,4 @@ public class Header {
     public void setValues(List<String> values) {
         this.values = values;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Header)) return false;
-
-        Header header = (Header) o;
-
-        if (!getKey().equals(header.getKey())) return false;
-        return getValues().equals(header.getValues());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getKey().hashCode();
-        result = 31 * result + getValues().hashCode();
-        return result;
-    }
 }

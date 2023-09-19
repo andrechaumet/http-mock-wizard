@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8084), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(8087), 0);
         server.createContext("/", new HttpRequestHandler());
         server.start();
 

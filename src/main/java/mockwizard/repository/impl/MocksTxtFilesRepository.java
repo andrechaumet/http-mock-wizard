@@ -12,27 +12,25 @@ import java.util.Optional;
 public class MocksTxtFilesRepository implements MocksRepository {
     //TODO: Create an inactive mocks folder
     private static final String BASE_PATH = "C:/Users/Andy/Desktop/mocks/";
-
-    private Gson gson = new Gson();
+    private static final Gson GSON = new Gson();
 
     @Override
     public Optional<MockFile> findByPathAndMethod(final String path, final String method) throws IOException {
-        StringBuilder contenido = new StringBuilder();
-        File file = new File(BASE_PATH + path.replaceAll("/", "~") +"_" + method + ".txt");
+        StringBuilder content = new StringBuilder();
+        File file = new File(BASE_PATH + path.replaceAll("~", "/") +"_" + method + ".txt");
 
         if (!file.exists() || !file.isFile()) {
-            System.out.println("FILE NOT FOUNDADADAD");
             throw new IOException("File does not exist");
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                contenido.append(linea).append("\n");
+                content.append(linea).append("\n");
             }
         }
 
-        return Optional.of(gson.fromJson(contenido.toString(), MockFile.class));
+        return Optional.of(GSON.fromJson(content.toString(), MockFile.class));
     }
 
     //TODO: Exception handling
@@ -44,8 +42,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
                         "_" +
                         mockFile.getMethod() +
                         ".txt");
-
-        myWriter.write(gson.toJson(mockFile));
+        myWriter.write(GSON.toJson(mockFile));
         myWriter.close();
         System.out.println("object saved at:" + BASE_PATH + mockFile.getPath() + "_" + mockFile.getMethod());
     }

@@ -28,42 +28,7 @@ public class HttpRequestHandler implements HttpHandler {
                 throw new RuntimeException(e);
             }
         });
-        newThread.start();        /*try {
-            //EXTRACTS VALUES
-            final String path = formatPath(exchange.getRequestURI().toString());
-            final String httpMethod = exchange.getRequestMethod();
-            final String body = extractBody(exchange.getRequestBody());
-            final Map<String, List<String>> headers = exchange.getRequestHeaders();
-            //CREATES REQUEST
-            final HttpRequest request = new HttpRequest();
-            request.setHttpMethod(httpMethod);
-            request.setRequiredBody(body);
-            request.setRequiredHeaders(headers);
-            //IF VALUE, RETURNS RESPONSE
-            final HttpResponse response = service.mock(path, request);
-            if (response == null) {
-                exchange.sendResponseHeaders(404, 0);
-                exchange.close();
-            } else {
-                OutputStream os = exchange.getResponseBody();
-                String responseBody = response.getBody();
-                for (Map<String, List<String> dsa : response.getHeaders().) {
-
-                }
-                for (Map.Entry<String, List<String>> asd : response.getHeaders().entrySet()) {
-                    exchange.getResponseHeaders().add("asd", "asd");
-                }
-                exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
-                os.write(responseBody.getBytes());
-                os.close();
-                exchange.close();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.out.println("------ERROR------");
-            exchange.sendResponseHeaders(500, 0);
-            exchange.close();
-        }*/
+        newThread.start();
     }
 
     //TODO: Store in the mock files how much delay I want the response to return.
@@ -76,6 +41,7 @@ public class HttpRequestHandler implements HttpHandler {
             final Map<String, List<String>> headers = exchange.getRequestHeaders();
             //CREATES REQUEST
             final HttpRequest request = convertToModel(exchange);
+            request.getBody().setValue(body);
             //IF VALUE, RETURNS RESPONSE
             final HttpResponse response = service.mock(path, request, httpMethod);
             if (response == null) {
@@ -95,9 +61,7 @@ public class HttpRequestHandler implements HttpHandler {
         } catch (IOException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.close();
-        } finally {
         }
-
     }
 
     private HttpRequest convertToModel(HttpExchange exchange) throws IOException {
@@ -120,6 +84,7 @@ public class HttpRequestHandler implements HttpHandler {
             Header header = new Header();
             header.setKey(entry.getKey());
             header.addValue(entry.getValue());
+            headersFormatted.add(header);
         }
         return headersFormatted;
     }
