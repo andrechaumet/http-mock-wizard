@@ -16,15 +16,19 @@ public class MocksTxtFilesRepository implements MocksRepository {
     private static final String BASE_PATH = "C:/Users/Andy/Desktop/mocks/";
     private static final Gson GSON = new Gson();
 
-    private final Map<Character, Character> miHashMap = new HashMap<Character, Character>() {{
+    private final Map<Character, Character> toStore = new HashMap<Character, Character>() {{
         put('/', '~');
         put('?', '!');
+    }};
+    private final Map<Character, Character> toRetrieve = new HashMap<Character, Character>() {{
+        put('~', '/');
+        put('!', '?');
     }};
 
     @Override
     public Optional<MockFile> findByPathAndMethod(final String path, final String method) throws IOException {
         StringBuilder content = new StringBuilder();
-        File file = new File(BASE_PATH + path.replaceAll("~", "/") +"_" + method + ".txt");
+        File file = new File(BASE_PATH + path.replaceAll("~", "/") + "_" + method + ".txt");
 
         if (!file.exists() || !file.isFile()) {
             throw new IOException("File does not exist");
@@ -44,7 +48,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
     public void save(final MockFile mockFile) throws IOException {
         FileWriter myWriter = new FileWriter(
                 BASE_PATH +
-                        mockFile.getPath().replaceAll("/", "~") +
+                        normalizeName(mockFile.getPath()) +
                         "_" +
                         mockFile.getMethod() +
                         ".txt");
@@ -56,13 +60,15 @@ public class MocksTxtFilesRepository implements MocksRepository {
     //TODO:
     private String normalizeName(String path) {
         StringBuilder normalizedPath = new StringBuilder();
-        for(char c : path.toCharArray()) {
-            if(miHashMap.containsKey(c)) {
-                c = miHashMap.get(c);
+        for (char c : path.toCharArray()) {
+            if (toStore.containsKey(c)) {
+                normalizedPath.append(toStore.get(c));
+            } else if(toRetrieve.containsKey(c)) {
+                normalizedPath.append(toRetrieve.get(c));
+            } else {
+                normalizedPath.append(c);
             }
-            normalizedPath.append(c);
         }
         return normalizedPath.toString();
     }
-
 }
