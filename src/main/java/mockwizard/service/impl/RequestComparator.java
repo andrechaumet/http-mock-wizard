@@ -24,18 +24,11 @@ public class RequestComparator {
                 if (sent.getBody() == null) {
                     return false;
                 }
-                System.out.println("BODY SAVED:");
-                System.out.println(found.getBody().getValue());
-                System.out.println("BODY SENT:");
-                //TODO: Dont look at me, i know its bad, trust me i know
-                System.out.println(sent.getBody().getValue().replaceAll(" ", "").replaceAll("\r\n", " ").replaceAll(" ", ""));
-
                 final boolean value = found.getBody()
                         .getValue()
                         .equals(sent.getBody().getValue()
                                 .replaceAll(" ", "")
-                                .replaceAll("\r\n", " ")
-                                .replaceAll(" ", "")
+                                .replaceAll("\r\n", "")
                         );
                 if (!value) {
                     LOGGER.info("BODIES DONT MATCH");

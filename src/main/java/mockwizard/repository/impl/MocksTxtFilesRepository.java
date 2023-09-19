@@ -6,6 +6,8 @@ import mockwizard.repository.MocksRepository;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -13,6 +15,11 @@ public class MocksTxtFilesRepository implements MocksRepository {
     //TODO: Create an inactive mocks folder
     private static final String BASE_PATH = "C:/Users/Andy/Desktop/mocks/";
     private static final Gson GSON = new Gson();
+
+    private final Map<Character, Character> miHashMap = new HashMap<Character, Character>() {{
+        put('/', '~');
+        put('?', '!');
+    }};
 
     @Override
     public Optional<MockFile> findByPathAndMethod(final String path, final String method) throws IOException {
@@ -29,7 +36,6 @@ public class MocksTxtFilesRepository implements MocksRepository {
                 content.append(linea).append("\n");
             }
         }
-
         return Optional.of(GSON.fromJson(content.toString(), MockFile.class));
     }
 
@@ -46,4 +52,17 @@ public class MocksTxtFilesRepository implements MocksRepository {
         myWriter.close();
         System.out.println("object saved at:" + BASE_PATH + mockFile.getPath() + "_" + mockFile.getMethod());
     }
+
+    //TODO:
+    private String normalizeName(String path) {
+        StringBuilder normalizedPath = new StringBuilder();
+        for(char c : path.toCharArray()) {
+            if(miHashMap.containsKey(c)) {
+                c = miHashMap.get(c);
+            }
+            normalizedPath.append(c);
+        }
+        return normalizedPath.toString();
+    }
+
 }
