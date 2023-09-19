@@ -1,7 +1,7 @@
 package mockwizard.service.impl;
 
 import mockwizard.model.HttpRequest;
-import mockwizard.model.MockFile;
+import mockwizard.model.Mock;
 import mockwizard.model.HttpResponse;
 import mockwizard.repository.MocksRepository;
 import mockwizard.repository.impl.MocksTxtFilesRepository;
@@ -17,13 +17,13 @@ public class MockServiceImpl implements MockService {
     private final RequestComparator requestComparator = new RequestComparator();
 
     public HttpResponse mock(final String path, final HttpRequest request, final String method) throws IOException {
-        final Optional<MockFile> mockFileOptional = repository.findByPathAndMethod(path, method);
+        final Optional<Mock> mockFileOptional = repository.findByPathAndMethod(path, method);
         if (mockFileOptional.isPresent()) {
             System.out.println("MOCK FILE FOUND");
         }
         return mockFileOptional
                 .filter(found -> requestComparator.compare(request, found.getKey()))
-                .map(MockFile::getValue)
+                .map(Mock::getValue)
                 .orElse(null);
     }
 }

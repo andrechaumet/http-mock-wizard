@@ -40,23 +40,25 @@ public class RequestComparator {
 
     //TODO:
     private boolean compareHeaders(HttpRequest sent, HttpRequest found) {
-        Map<String, List<String>> headersSent = sent.getHeaders()
-                .stream()
-                .collect(Collectors
-                        .toMap(
-                                header -> header.getKey().toLowerCase(),
-                                header -> header.getValues()
-                                        .stream()
-                                        .map(String::toLowerCase)
-                                        .collect(Collectors.toList())
-                        )
-                );
-        for (Header header : found.getHeaders()) {
-            if (header.isRequired()) {
-                final String requiredKey = header.getKey();
-                final List<String> requiredValues = header.getValues();
-                if(!headersSent.get(requiredKey.toLowerCase()).containsAll(requiredValues.stream().map(String::toLowerCase).collect(Collectors.toList()))) {
-                    return false;
+        if(found.getHeaders() != null) {
+            Map<String, List<String>> headersSent = sent.getHeaders()
+                    .stream()
+                    .collect(Collectors
+                            .toMap(
+                                    header -> header.getKey().toLowerCase(),
+                                    header -> header.getValues()
+                                            .stream()
+                                            .map(String::toLowerCase)
+                                            .collect(Collectors.toList())
+                            )
+                    );
+            for (Header header : found.getHeaders()) {
+                if (header.isRequired()) {
+                    final String requiredKey = header.getKey();
+                    final List<String> requiredValues = header.getValues();
+                    if (!headersSent.get(requiredKey.toLowerCase()).containsAll(requiredValues.stream().map(String::toLowerCase).collect(Collectors.toList()))) {
+                        return false;
+                    }
                 }
             }
         }

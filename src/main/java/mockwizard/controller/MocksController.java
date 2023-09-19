@@ -1,6 +1,6 @@
 package mockwizard.controller;
 
-import mockwizard.model.MockFile;
+import mockwizard.model.Mock;
 import mockwizard.repository.MocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +19,9 @@ public class MocksController {
     }
 
     @PostMapping()
-    public String createMock(@RequestBody MockFile mockFile) throws IOException {
-        mocksRepository.save(mockFile);
-        return null;
+    public Mock createMock(@RequestBody Mock mock) throws IOException {
+        return mocksRepository.save(mock);
     }
-
     /*//TODO:
     @GetMapping
     public List<MockFile> findAll() throws IOException {
