@@ -49,13 +49,13 @@ public class HttpRequestHandler implements HttpHandler {
                 throw new IllegalArgumentException();
             }
 
-            OutputStream os = exchange.getResponseBody();
+            OutputStream output = exchange.getResponseBody();
 
             String responseBody = mockFile.getValue().getBody();
             exchange.getResponseHeaders().putAll(mockFile.getValue().getHeaders());
             exchange.sendResponseHeaders(Integer.parseInt(mockFile.getValue().getHttpStatusCode()), responseBody.getBytes().length);
-            os.write(responseBody.getBytes());
-            os.close();
+            output.write(responseBody.getBytes());
+            output.close();
             exchange.close();
 
         } catch (IOException e) {
@@ -65,20 +65,18 @@ public class HttpRequestHandler implements HttpHandler {
     }
 
     private HttpRequest convertToModel(final HttpExchange exchange) throws IOException {
-        final String body = extractBody(exchange.getRequestBody());
         final Map<String, List<String>> headers = exchange.getRequestHeaders();
-        HttpRequest model = new HttpRequest();
-        final Body bodyObject = new Body();
-        bodyObject.setValue(body);
+        final String body = extractBody(exchange.getRequestBody());
+        final HttpRequest model = new HttpRequest();
+        model.setBody(new Body(body));
         model.setHeaders(formatHeaders(headers));
-        model.setBody(bodyObject);
         return model;
     }
 
     private List<Header> formatHeaders(final Map<String, List<String>> headers) {
         final List<Header> headersFormatted = new LinkedList<>();
         for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            Header header = new Header();
+            final Header header = new Header();
             header.setKey(entry.getKey());
             header.addValue(entry.getValue());
             headersFormatted.add(header);
@@ -87,9 +85,9 @@ public class HttpRequestHandler implements HttpHandler {
     }
 
     private String extractBody(final InputStream body) throws IOException {
-        StringBuilder requestBodyBuilder = new StringBuilder();
+        final StringBuilder requestBodyBuilder = new StringBuilder();
         int bytesRead;
-        byte[] buffer = new byte[1024];
+        final byte[] buffer = new byte[1024];
         while ((bytesRead = body.read(buffer)) != -1) {
             requestBodyBuilder.append(new String(buffer, 0, bytesRead));
         }
