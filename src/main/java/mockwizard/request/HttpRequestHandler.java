@@ -3,10 +3,14 @@ package mockwizard.request;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import mockwizard.model.*;
+import mockwizard.service.MockService;
 import mockwizard.service.impl.MockServiceImpl;
 import mockwizard.service.impl.RequestValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,13 +19,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class HttpRequestHandler implements HttpHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequestHandler.class);
 
-    private final RequestValidator validator = new RequestValidator();
+    private final MockService service;
 
-    private final MockServiceImpl service = new MockServiceImpl();
+    @Autowired
+    public HttpRequestHandler(MockService mockService) {
+        this.service = mockService;
+    }
 
     @Override
     public void handle(HttpExchange exchange) {
@@ -42,18 +50,14 @@ public class HttpRequestHandler implements HttpHandler {
             final String httpMethod = exchange.getRequestMethod();
             final String path = exchange.getRequestURI().toString();
 
-            final MockFile mockFile = service.mock(path, httpMethod, request);
 
-            if (!validator.isValid(request, mockFile.getKey())) {
-                LOGGER.info("HTTP Request does not achieve required parameters.");
-                throw new IllegalArgumentException();
-            }
+            final HttpResponse response = service.mock(path, httpMethod, request);
 
             OutputStream output = exchange.getResponseBody();
 
-            String responseBody = mockFile.getValue().getBody();
-            exchange.getResponseHeaders().putAll(mockFile.getValue().getHeaders());
-            exchange.sendResponseHeaders(Integer.parseInt(mockFile.getValue().getHttpStatusCode()), responseBody.getBytes().length);
+            String responseBody = response.getBody();
+            exchange.getResponseHeaders().putAll(response.getHeaders());
+            exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
             output.write(responseBody.getBytes());
             output.close();
             exchange.close();

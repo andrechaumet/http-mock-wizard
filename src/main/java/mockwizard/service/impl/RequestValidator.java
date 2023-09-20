@@ -19,6 +19,19 @@ public class RequestValidator {
     }
 
     private boolean compareBodies(HttpRequest sent, HttpRequest found) {
+        if (found.getBody() != null && found.getBody().isRequired()) {
+            if (sent.getBody() == null) {
+                return false;
+            }
+            String foundBodyValue = found.getBody().getValue().replaceAll(" ", "").replaceAll("\r\n", "");
+            String sentBodyValue = sent.getBody().getValue().replaceAll(" ", "").replaceAll("\r\n", "");
+            return foundBodyValue.equals(sentBodyValue);
+        }
+        return true;
+    }
+
+/*
+    private boolean compareBodies(HttpRequest sent, HttpRequest found) {
         if (found.getBody() != null) {
             if (found.getBody().isRequired()) {
                 if (sent.getBody() == null) {
@@ -30,13 +43,12 @@ public class RequestValidator {
                                 .replaceAll(" ", "")
                                 .replaceAll("\r\n", "")
                         );
-                if (!value) {
-                    LOGGER.error("Body sent does not match with found required body.");
-                }
+                return value;
             }
         }
         return true;
     }
+*/
 
     //TODO:
     private boolean compareHeaders(HttpRequest sent, HttpRequest found) {

@@ -1,21 +1,23 @@
 package mockwizard;
 
-import com.sun.net.httpserver.HttpServer;
-import mockwizard.request.HttpRequestHandler;
+import mockwizard.config.MockConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 
 @SpringBootApplication
 public class App {
 
-    public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8087), 0);
-        server.createContext("/", new HttpRequestHandler());
-        server.start();
+    private final MockConfig mockConfig;
 
+    @Autowired
+    public App(MockConfig mockConfig) {
+        this.mockConfig = mockConfig;
+    }
+
+    public static void main(String[] args) throws IOException {
         SpringApplication springApplication = new SpringApplication(App.class);
         springApplication.run(args);
     }
