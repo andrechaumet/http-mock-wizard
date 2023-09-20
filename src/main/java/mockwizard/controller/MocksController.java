@@ -1,6 +1,5 @@
 package mockwizard.controller;
 
-import mockwizard.config.MockConfig;
 import mockwizard.model.MockFile;
 import mockwizard.repository.MocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +12,14 @@ import java.io.IOException;
 public class MocksController {
 
     private final MocksRepository mocksRepository;
-    private final MockConfig mockConfig;
 
     @Autowired
-    public MocksController(MocksRepository mocksRepository, MockConfig mockConfig) {
+    public MocksController(MocksRepository mocksRepository) {
         this.mocksRepository = mocksRepository;
-        this.mockConfig = mockConfig;
     }
 
     @PostMapping()
-    public MockFile createMock(@RequestBody MockFile mockFile) throws IOException {
+    public MockFile saveMock(@RequestBody MockFile mockFile) throws IOException {
         return mocksRepository.save(mockFile);
     }
     /*//TODO:
