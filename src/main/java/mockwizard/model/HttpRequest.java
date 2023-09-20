@@ -22,11 +22,7 @@ public class HttpRequest {
         this.body = body;
     }
 
-    @Override
-    public String toString() {
-        return "HttpRequest{" +
-                "headers=" + headers +
-                ", body=" + body +
-                '}';
+    public void setBody(String value) {
+        this.body = new Body(value);
     }
 }

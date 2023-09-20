@@ -38,12 +38,12 @@ public class HttpRequestHandler implements HttpHandler {
     //TODO: Store in the mock file how much delay I want the response to return.
     private void handleAsync(final HttpExchange exchange) throws IOException, InterruptedException {
         try {
-            //EXTRACTS VALUES
             final HttpRequest request = convertToModel(exchange);
             final String httpMethod = exchange.getRequestMethod();
             final String path = exchange.getRequestURI().toString();
-            //IF VALUE, RETURNS RESPONSE
-            final MockFile mockFile = service.mock(path, httpMethod);
+
+            final MockFile mockFile = service.mock(path, httpMethod, request);
+
             if (!validator.isValid(request, mockFile.getKey())) {
                 LOGGER.info("HTTP Request does not achieve required parameters.");
                 throw new IllegalArgumentException();
@@ -65,15 +65,13 @@ public class HttpRequestHandler implements HttpHandler {
     }
 
     private HttpRequest convertToModel(final HttpExchange exchange) throws IOException {
-        final Map<String, List<String>> headers = exchange.getRequestHeaders();
-        final String body = extractBody(exchange.getRequestBody());
         final HttpRequest model = new HttpRequest();
-        model.setBody(new Body(body));
-        model.setHeaders(formatHeaders(headers));
+        model.setBody(extractBody(exchange.getRequestBody()));
+        model.setHeaders(extractHeaders(exchange.getRequestHeaders()));
         return model;
     }
 
-    private List<Header> formatHeaders(final Map<String, List<String>> headers) {
+    private List<Header> extractHeaders(final Map<String, List<String>> headers) {
         final List<Header> headersFormatted = new LinkedList<>();
         for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
             final Header header = new Header();

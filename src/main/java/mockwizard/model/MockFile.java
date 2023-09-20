@@ -37,14 +37,4 @@ public class MockFile {
     public void setValue(HttpResponse value) {
         this.value = value;
     }
-
-    @Override
-    public String toString() {
-        return "MockFile{" +
-                "path='" + path + '\'' +
-                ", method='" + method + '\'' +
-                ", key=" + key +
-                ", value=" + value +
-                '}';
-    }
 }
