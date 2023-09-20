@@ -28,17 +28,15 @@ public class MockServiceImpl implements MockService {
 
     public HttpResponse mock(final String path, final String method, final HttpRequest request) throws IOException {
         final MockFile mockFile = repository.findByPathAndMethod(path, method);
-
         failIfKeysDontMatch(request, mockFile.getKey());
-
         if (!validator.isValid(request, mockFile.getKey())) {
             LOGGER.info("HTTP Request does not achieve required parameters.");
             throw new IllegalArgumentException();
         }
-
         return mockFile.getValue();
     }
 
+    //TODO:
     private void failIfKeysDontMatch(HttpRequest sent, HttpRequest found) {
 
     }

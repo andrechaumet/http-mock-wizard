@@ -18,6 +18,7 @@ import java.util.Map;
 @Component
 public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
 
+    //TODO: Log
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockHandler.class);
 
     private final MockService service;
@@ -58,12 +59,12 @@ public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
     }
 
     private void handleResponse(final HttpExchange exchange, final HttpResponse response) throws IOException {
-        final OutputStream output = exchange.getResponseBody();
         final String responseBody = response.getBody();
-        exchange.getResponseHeaders().putAll(response.getHeaders());
+        try (final OutputStream output = exchange.getResponseBody()) {
+            output.write(responseBody.getBytes());
+        }
         exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
-        output.write(responseBody.getBytes());
-        output.close();
+        exchange.getResponseHeaders().putAll(response.getHeaders());
     }
 
     private HttpRequest convertToModel(final HttpExchange exchange) throws IOException {
