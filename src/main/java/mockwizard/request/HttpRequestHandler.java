@@ -35,16 +35,13 @@ public class HttpRequestHandler implements HttpHandler {
         newThread.start();
     }
 
-    //TODO: Store in the mock files how much delay I want the response to return.
+    //TODO: Store in the mock file how much delay I want the response to return.
     private void handleAsync(final HttpExchange exchange) throws IOException, InterruptedException {
         try {
             //EXTRACTS VALUES
-            final String path = exchange.getRequestURI().toString();
-            final String httpMethod = exchange.getRequestMethod();
-            final String body = extractBody(exchange.getRequestBody());
-            //CREATES REQUEST
             final HttpRequest request = convertToModel(exchange);
-            request.getBody().setValue(body);
+            final String httpMethod = exchange.getRequestMethod();
+            final String path = exchange.getRequestURI().toString();
             //IF VALUE, RETURNS RESPONSE
             final MockFile mockFile = service.mock(path, httpMethod);
             if (!validator.isValid(request, mockFile.getKey())) {

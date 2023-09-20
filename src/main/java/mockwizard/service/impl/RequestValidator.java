@@ -31,7 +31,7 @@ public class RequestValidator {
                                 .replaceAll("\r\n", "")
                         );
                 if (!value) {
-                    LOGGER.info("BODIES DONT MATCH");
+                    LOGGER.error("Body sent does not match with found required body.");
                 }
             }
         }
