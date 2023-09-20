@@ -1,16 +1,12 @@
 package mockwizard.request;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import mockwizard.model.*;
 import mockwizard.service.MockService;
-import mockwizard.service.impl.MockServiceImpl;
-import mockwizard.service.impl.RequestValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,52 +16,54 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class HttpRequestHandler implements HttpHandler {
+public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequestHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockHandler.class);
 
     private final MockService service;
 
     @Autowired
-    public HttpRequestHandler(MockService mockService) {
+    public HttpMockHandler(MockService mockService) {
         this.service = mockService;
     }
 
     @Override
     public void handle(HttpExchange exchange) {
-        Thread newThread = new Thread(() -> {
+        new Thread(() -> {
             try {
                 handleAsync(exchange);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        });
-        newThread.start();
+        }).start();
     }
 
     //TODO: Store in the mock file how much delay I want the response to return.
     private void handleAsync(final HttpExchange exchange) throws IOException, InterruptedException {
         try {
-            final HttpRequest request = convertToModel(exchange);
-            final String httpMethod = exchange.getRequestMethod();
-            final String path = exchange.getRequestURI().toString();
 
-
-            final HttpResponse response = service.mock(path, httpMethod, request);
-
-            OutputStream output = exchange.getResponseBody();
-
-            String responseBody = response.getBody();
-            exchange.getResponseHeaders().putAll(response.getHeaders());
-            exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
-            output.write(responseBody.getBytes());
-            output.close();
-            exchange.close();
-
+            handleResponse(exchange, handleRequest(exchange));
         } catch (IOException e) {
             exchange.sendResponseHeaders(500, 0);
+        } finally {
             exchange.close();
         }
+    }
+
+    private HttpResponse handleRequest(final HttpExchange exchange) throws IOException {
+        final HttpRequest request = convertToModel(exchange);
+        final String httpMethod = exchange.getRequestMethod();
+        final String path = exchange.getRequestURI().toString();
+        return service.mock(path, httpMethod, request);
+    }
+
+    private void handleResponse(final HttpExchange exchange, final HttpResponse response) throws IOException {
+        final OutputStream output = exchange.getResponseBody();
+        final String responseBody = response.getBody();
+        exchange.getResponseHeaders().putAll(response.getHeaders());
+        exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
+        output.write(responseBody.getBytes());
+        output.close();
     }
 
     private HttpRequest convertToModel(final HttpExchange exchange) throws IOException {

@@ -1,7 +1,7 @@
 package mockwizard.config;
 
 import com.sun.net.httpserver.HttpServer;
-import mockwizard.request.HttpRequestHandler;
+import mockwizard.request.HttpMockHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,17 @@ public class MockConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockConfig.class);
     private static final Integer PORT = 8088;
-    private final HttpRequestHandler httpRequestHandler;
+    private final HttpMockHandler httpMockHandler;
 
     @Autowired
-    public MockConfig(HttpRequestHandler httpRequestHandler) {
-        this.httpRequestHandler = httpRequestHandler;
+    public MockConfig(HttpMockHandler httpMockHandler) {
+        this.httpMockHandler = httpMockHandler;
     }
 
     @Scheduled(initialDelayString = "1000", fixedRate = Long.MAX_VALUE)
     public void init() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        server.createContext("/", httpRequestHandler);
+        server.createContext("/", httpMockHandler);
         server.start();
         LOGGER.info("Started mock context in port [{}].", PORT);
     }
