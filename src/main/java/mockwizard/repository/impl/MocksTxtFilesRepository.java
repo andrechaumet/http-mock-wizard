@@ -1,7 +1,7 @@
 package mockwizard.repository.impl;
 
 import com.google.gson.Gson;
-import mockwizard.model.Mock;
+import mockwizard.model.MockFile;
 import mockwizard.repository.MocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -32,24 +31,24 @@ public class MocksTxtFilesRepository implements MocksRepository {
     }};
 
     @Override
-    public Mock findByPathAndMethod(final String path, final String method) throws IOException {
+    public MockFile findByPathAndMethod(final String path, final String method) throws IOException {
         final String pathToSearch = format(PATH_FORMAT, normalizeFilePath(path), method);
         final File file = new File(pathToSearch);
         failIfFileDoesNotExist(file);
-        final Mock mock = extractFromFile(file);
-        return mock;
+        final MockFile mockFile = extractFromFile(file);
+        return mockFile;
     }
 
     @Override
-    public Mock save(final Mock mock) throws IOException {
-        final String filePath = format(PATH_FORMAT, normalizeFilePath(mock.getPath()), mock.getMethod());
+    public MockFile save(final MockFile mockFile) throws IOException {
+        final String filePath = format(PATH_FORMAT, normalizeFilePath(mockFile.getPath()), mockFile.getMethod());
         try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(GSON.toJson(mock));
-            return mock;
+            writer.write(GSON.toJson(mockFile));
+            return mockFile;
         }
     }
 
-    private Mock extractFromFile(final File mockFile) throws IOException {
+    private MockFile extractFromFile(final File mockFile) throws IOException {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(mockFile))) {
             String linea;
@@ -57,7 +56,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
                 content.append(linea).append("\n");
             }
         }
-        return GSON.fromJson(content.toString(), Mock.class);
+        return GSON.fromJson(content.toString(), MockFile.class);
     }
 
     private String normalizeFilePath(final String path) {

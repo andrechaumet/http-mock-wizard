@@ -1,6 +1,6 @@
 package mockwizard.service.impl;
 
-import mockwizard.model.Mock;
+import mockwizard.model.MockFile;
 import mockwizard.repository.MocksRepository;
 import mockwizard.repository.impl.MocksTxtFilesRepository;
 import mockwizard.service.MockService;
@@ -16,8 +16,8 @@ public class MockServiceImpl implements MockService {
     private final MocksRepository repository = new MocksTxtFilesRepository();
     //TODO:
 
-    public Mock mock(final String path, final String method) throws IOException {
-        final Mock mock = repository.findByPathAndMethod(path, method);
-        return mock;
+    public MockFile mock(final String path, final String method) throws IOException {
+        final MockFile mockFile = repository.findByPathAndMethod(path, method);
+        return mockFile;
     }
 }

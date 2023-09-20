@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,17 +46,17 @@ public class HttpRequestHandler implements HttpHandler {
             final HttpRequest request = convertToModel(exchange);
             request.getBody().setValue(body);
             //IF VALUE, RETURNS RESPONSE
-            final Mock mock = service.mock(path, httpMethod);
-            if (!validator.isValid(request, mock.getKey())) {
+            final MockFile mockFile = service.mock(path, httpMethod);
+            if (!validator.isValid(request, mockFile.getKey())) {
                 LOGGER.info("HTTP Request does not achieve required parameters.");
                 throw new IllegalArgumentException();
             }
 
             OutputStream os = exchange.getResponseBody();
 
-            String responseBody = mock.getValue().getBody();
-            exchange.getResponseHeaders().putAll(mock.getValue().getHeaders());
-            exchange.sendResponseHeaders(Integer.parseInt(mock.getValue().getHttpStatusCode()), responseBody.getBytes().length);
+            String responseBody = mockFile.getValue().getBody();
+            exchange.getResponseHeaders().putAll(mockFile.getValue().getHeaders());
+            exchange.sendResponseHeaders(Integer.parseInt(mockFile.getValue().getHttpStatusCode()), responseBody.getBytes().length);
             os.write(responseBody.getBytes());
             os.close();
             exchange.close();

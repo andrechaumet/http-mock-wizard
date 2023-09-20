@@ -1,9 +1,9 @@
 package mockwizard.service;
 
-import mockwizard.model.Mock;
+import mockwizard.model.MockFile;
 
 import java.io.IOException;
 
 public interface MockService {
-    Mock mock(final String path, final String method) throws IOException;
+    MockFile mock(final String path, final String method) throws IOException;
 }
