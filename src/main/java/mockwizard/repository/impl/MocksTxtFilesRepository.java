@@ -14,14 +14,14 @@ import java.util.Optional;
 
 import static java.lang.String.format;
 
+    //TODO: Create an inactive mocks folder
 @Repository
 public class MocksTxtFilesRepository implements MocksRepository {
-    //TODO: Create an inactive mocks folder
     private static final Logger LOGGER = LoggerFactory.getLogger(MocksTxtFilesRepository.class);
 
     //TODO: @Value
     private static final String BASE_PATH = "C:/Users/Andy/Desktop/mocks/";
-    private static final String PATH_FORMAT = BASE_PATH + "_%s_%s.txt";
+    private static final String PATH_FORMAT = BASE_PATH + "%s_%s.txt";
     private static final Gson GSON = new Gson();
 
     private final Map<Character, Character> CONVERSION = new HashMap<Character, Character>() {{
@@ -32,12 +32,12 @@ public class MocksTxtFilesRepository implements MocksRepository {
     }};
 
     @Override
-    public Optional<Mock> findByPathAndMethod(final String path, final String method) throws IOException {
+    public Mock findByPathAndMethod(final String path, final String method) throws IOException {
         final String pathToSearch = format(PATH_FORMAT, normalizeFilePath(path), method);
-        File file = new File(pathToSearch);
+        final File file = new File(pathToSearch);
         failIfFileDoesNotExist(file);
         final Mock mock = extractFromFile(file);
-        return Optional.of(mock);
+        return mock;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
         }
     }
 
-    private Mock extractFromFile(File mockFile) throws IOException {
+    private Mock extractFromFile(final File mockFile) throws IOException {
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(mockFile))) {
             String linea;
@@ -60,7 +60,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
         return GSON.fromJson(content.toString(), Mock.class);
     }
 
-    private String normalizeFilePath(String path) {
+    private String normalizeFilePath(final String path) {
         StringBuilder filePath = new StringBuilder();
         for (char c : path.toCharArray()) {
             filePath.append(convert(c));
@@ -68,11 +68,11 @@ public class MocksTxtFilesRepository implements MocksRepository {
         return filePath.toString();
     }
 
-    private char convert(char c) {
+    private char convert(final char c) {
         return CONVERSION.getOrDefault(c, c);
     }
 
-    private void failIfFileDoesNotExist(File file) throws IOException {
+    private void failIfFileDoesNotExist(final File file) throws IOException {
         if (!file.exists() || !file.isFile()) {
             LOGGER.error("File with path [{}] does not exist.", file.getPath());
             throw new IOException("File does not exist.");

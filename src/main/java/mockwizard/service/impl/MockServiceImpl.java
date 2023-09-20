@@ -1,29 +1,23 @@
 package mockwizard.service.impl;
 
-import mockwizard.model.HttpRequest;
 import mockwizard.model.Mock;
-import mockwizard.model.HttpResponse;
 import mockwizard.repository.MocksRepository;
 import mockwizard.repository.impl.MocksTxtFilesRepository;
 import mockwizard.service.MockService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class MockServiceImpl implements MockService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockServiceImpl.class);
+
     private final MocksRepository repository = new MocksTxtFilesRepository();
     //TODO:
-    private final RequestComparator requestComparator = new RequestComparator();
 
-    public HttpResponse mock(final String path, final HttpRequest request, final String method) throws IOException {
-        final Optional<Mock> mockFileOptional = repository.findByPathAndMethod(path, method);
-        if (mockFileOptional.isPresent()) {
-            System.out.println("MOCK FILE FOUND");
-        }
-        return mockFileOptional
-                .filter(found -> requestComparator.compare(request, found.getKey()))
-                .map(Mock::getValue)
-                .orElse(null);
+    public Mock mock(final String path, final String method) throws IOException {
+        final Mock mock = repository.findByPathAndMethod(path, method);
+        return mock;
     }
 }

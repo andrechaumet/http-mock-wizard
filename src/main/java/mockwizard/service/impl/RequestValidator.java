@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class RequestComparator {
+public class RequestValidator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RequestComparator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestValidator.class);
 
 
-    public boolean compare(HttpRequest sent, HttpRequest found) {
+    public boolean isValid(HttpRequest sent, HttpRequest found) {
         return compareBodies(sent, found) && compareHeaders(sent, found);
     }
 
