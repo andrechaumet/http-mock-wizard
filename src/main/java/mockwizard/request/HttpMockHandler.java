@@ -42,7 +42,6 @@ public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
     //TODO: Store in the mock file how much delay I want the response to return.
     private void handleAsync(final HttpExchange exchange) throws IOException, InterruptedException {
         try {
-
             handleResponse(exchange, handleRequest(exchange));
         } catch (IOException e) {
             exchange.sendResponseHeaders(500, 0);

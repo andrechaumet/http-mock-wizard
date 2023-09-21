@@ -1,7 +1,7 @@
 package mockwizard.repository.impl;
 
 import com.google.gson.Gson;
-import mockwizard.model.MockFile;
+import mockwizard.model.Mock;
 import mockwizard.repository.MocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
     }};
 
     @Override
-    public MockFile findByPathAndMethod(final String path, final String method) throws IOException {
+    public Mock findByPathAndMethod(final String path, final String method) throws IOException {
         final String pathToSearch = format(PATH_FORMAT, normalizeFilePath(path), method);
         final File file = new File(pathToSearch);
         failIfPathIsNotValid(file);
@@ -39,15 +39,15 @@ public class MocksTxtFilesRepository implements MocksRepository {
     }
 
     @Override
-    public MockFile save(final MockFile mockFile) throws IOException {
-        final String filePath = format(PATH_FORMAT, normalizeFilePath(mockFile.getPath()), mockFile.getMethod());
+    public Mock save(final Mock mock) throws IOException {
+        final String filePath = format(PATH_FORMAT, normalizeFilePath(mock.getPath()), mock.getMethod());
         try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(GSON.toJson(mockFile));
-            return mockFile;
+            writer.write(GSON.toJson(mock));
+            return mock;
         }
     }
 
-    private MockFile extractFromFile(final File mockFile) throws IOException {
+    private Mock extractFromFile(final File mockFile) throws IOException {
         final StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(mockFile))) {
             String line;
@@ -55,7 +55,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
                 content.append(line).append("\n");
             }
         }
-        return GSON.fromJson(content.toString(), MockFile.class);
+        return GSON.fromJson(content.toString(), Mock.class);
     }
 
     private String normalizeFilePath(final String path) {

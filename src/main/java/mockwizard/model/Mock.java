@@ -1,6 +1,6 @@
 package mockwizard.model;
 
-public class MockFile {
+public class Mock {
     private String path;
     private String method;
     private HttpRequest key;

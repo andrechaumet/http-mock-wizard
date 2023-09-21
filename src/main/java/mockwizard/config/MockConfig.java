@@ -25,6 +25,7 @@ public class MockConfig {
         this.httpMockHandler = httpMockHandler;
     }
 
+    //TODO: hotfix solve later
     @Scheduled(initialDelayString = "1000", fixedRate = Long.MAX_VALUE)
     public void init() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);

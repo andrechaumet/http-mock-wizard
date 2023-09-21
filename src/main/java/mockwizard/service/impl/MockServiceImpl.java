@@ -2,7 +2,7 @@ package mockwizard.service.impl;
 
 import mockwizard.model.HttpRequest;
 import mockwizard.model.HttpResponse;
-import mockwizard.model.MockFile;
+import mockwizard.model.Mock;
 import mockwizard.repository.MocksRepository;
 import mockwizard.service.MockService;
 import org.slf4j.Logger;
@@ -27,13 +27,13 @@ public class MockServiceImpl implements MockService {
     }
 
     public HttpResponse mock(final String path, final String method, final HttpRequest request) throws IOException {
-        final MockFile mockFile = repository.findByPathAndMethod(path, method);
-        failIfKeysDontMatch(request, mockFile.getKey());
-        if (!validator.isValid(request, mockFile.getKey())) {
+        final Mock mock = repository.findByPathAndMethod(path, method);
+        failIfKeysDontMatch(request, mock.getKey());
+        if (!validator.isValid(request, mock.getKey())) {
             LOGGER.info("HTTP Request does not achieve required parameters.");
             throw new IllegalArgumentException();
         }
-        return mockFile.getValue();
+        return mock.getValue();
     }
 
     //TODO:
