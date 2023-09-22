@@ -1,6 +1,5 @@
 package mockwizard.service.impl;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mockwizard.model.Header;
@@ -14,20 +13,18 @@ import java.util.stream.Collectors;
 
 public class RequestValidator {
     private static final JsonParser PARSER = new JsonParser();
+
+    //TODO:
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestValidator.class);
 
-    public static boolean isValid(HttpRequest sent, HttpRequest found) {
-        return compareBodies(sent, found) && compareHeaders(sent, found);
-    }
-
-    private static boolean compareBodies(HttpRequest sent, HttpRequest found) {
+    public static boolean validBody(HttpRequest sent, HttpRequest found) {
         if (found.getBody() == null) return false;
         final JsonElement sentBody = PARSER.parse(sent.getBody().getValue());
         final JsonElement foundBody = PARSER.parse(found.getBody().getValue());
         return sentBody.equals(foundBody);
     }
 
-    private static boolean compareHeaders(HttpRequest sent, HttpRequest found) {
+    public static boolean validHeaders(HttpRequest sent, HttpRequest found) {
         if (found.getHeaders() != null) {
             Map<String, List<String>> headersSent = sent.getHeaders()
                     .stream()

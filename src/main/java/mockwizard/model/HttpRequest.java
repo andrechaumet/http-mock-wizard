@@ -4,7 +4,16 @@ import java.util.List;
 
 public class HttpRequest {
     private List<Header> headers;
+    private List<Param> params;
     private Body body;
+
+    public List<Param> getParams() {
+        return params;
+    }
+
+    public void setParams(List<Param> params) {
+        this.params = params;
+    }
 
     public List<Header> getHeaders() {
         return headers;

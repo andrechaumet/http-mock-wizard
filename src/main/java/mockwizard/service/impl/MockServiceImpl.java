@@ -1,5 +1,6 @@
 package mockwizard.service.impl;
 
+import mockwizard.exception.HttpMockWizardException;
 import mockwizard.model.HttpRequest;
 import mockwizard.model.HttpResponse;
 import mockwizard.model.Mock;
@@ -12,14 +13,17 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static mockwizard.exception.DetailedException.BODIES_DONT_MATCH;
+import static mockwizard.exception.DetailedException.HEADERS_DONT_MATCH;
+import static mockwizard.service.impl.RequestValidator.validBody;
+import static mockwizard.service.impl.RequestValidator.validHeaders;
+
 @Component
 public class MockServiceImpl implements MockService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockServiceImpl.class);
 
     private final MocksRepository repository;
-
-    private final RequestValidator validator = new RequestValidator();
 
     @Autowired
     public MockServiceImpl(MocksRepository mocksRepository) {
@@ -29,15 +33,19 @@ public class MockServiceImpl implements MockService {
     public HttpResponse mock(final String path, final String method, final HttpRequest request) throws IOException {
         final Mock mock = repository.findByPathAndMethod(path, method);
         failIfKeysDontMatch(request, mock.getKey());
-        if (!validator.isValid(request, mock.getKey())) {
-            LOGGER.info("HTTP Request does not achieve required parameters.");
-            throw new IllegalArgumentException();
-        }
         return mock.getValue();
     }
 
-    //TODO:
+    //TODO: Create single method and then submethods for 3/n cases
     private void failIfKeysDontMatch(HttpRequest sent, HttpRequest found) {
+        if(!validBody(sent, found)) {
+            throw new HttpMockWizardException(BODIES_DONT_MATCH);
+        }
+        if(!validHeaders(sent, found)) {
+            throw new HttpMockWizardException(HEADERS_DONT_MATCH);
+        }
+        /*if(!validParams(sent, found)) {
 
+        }*/
     }
 }
