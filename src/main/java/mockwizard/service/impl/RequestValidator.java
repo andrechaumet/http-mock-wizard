@@ -1,5 +1,8 @@
 package mockwizard.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import mockwizard.model.Header;
 import mockwizard.model.HttpRequest;
 import org.slf4j.Logger;
@@ -10,49 +13,22 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RequestValidator {
-
+    private static final JsonParser PARSER = new JsonParser();
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestValidator.class);
 
-
-    public boolean isValid(HttpRequest sent, HttpRequest found) {
+    public static boolean isValid(HttpRequest sent, HttpRequest found) {
         return compareBodies(sent, found) && compareHeaders(sent, found);
     }
 
-    private boolean compareBodies(HttpRequest sent, HttpRequest found) {
-        if (found.getBody() != null && found.getBody().isRequired()) {
-            if (sent.getBody() == null) {
-                return false;
-            }
-            String foundBodyValue = found.getBody().getValue().replaceAll(" ", "").replaceAll("\r\n", "");
-            String sentBodyValue = sent.getBody().getValue().replaceAll(" ", "").replaceAll("\r\n", "");
-            return foundBodyValue.equals(sentBodyValue);
-        }
-        return true;
+    private static boolean compareBodies(HttpRequest sent, HttpRequest found) {
+        if (found.getBody() == null) return false;
+        final JsonElement sentBody = PARSER.parse(sent.getBody().getValue());
+        final JsonElement foundBody = PARSER.parse(found.getBody().getValue());
+        return sentBody.equals(foundBody);
     }
 
-/*
-    private boolean compareBodies(HttpRequest sent, HttpRequest found) {
-        if (found.getBody() != null) {
-            if (found.getBody().isRequired()) {
-                if (sent.getBody() == null) {
-                    return false;
-                }
-                final boolean value = found.getBody()
-                        .getValue()
-                        .equals(sent.getBody().getValue()
-                                .replaceAll(" ", "")
-                                .replaceAll("\r\n", "")
-                        );
-                return value;
-            }
-        }
-        return true;
-    }
-*/
-
-    //TODO:
-    private boolean compareHeaders(HttpRequest sent, HttpRequest found) {
-        if(found.getHeaders() != null) {
+    private static boolean compareHeaders(HttpRequest sent, HttpRequest found) {
+        if (found.getHeaders() != null) {
             Map<String, List<String>> headersSent = sent.getHeaders()
                     .stream()
                     .collect(Collectors
