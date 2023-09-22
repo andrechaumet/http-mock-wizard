@@ -1,6 +1,7 @@
 package mockwizard.request;
 
 import com.sun.net.httpserver.HttpExchange;
+import mockwizard.exception.MockingException;
 import mockwizard.model.*;
 import mockwizard.service.MockService;
 import org.slf4j.Logger;
@@ -43,6 +44,9 @@ public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
     private void handleAsync(final HttpExchange exchange) throws IOException, InterruptedException {
         try {
             handleResponse(exchange, handleRequest(exchange));
+        } catch (MockingException e) {
+            exchange.sendResponseHeaders(e.getCode(), e.getMessage().length());
+            exchange.getResponseBody().write(e.getMessage().getBytes());
         } catch (IOException e) {
             exchange.sendResponseHeaders(500, 0);
         } finally {

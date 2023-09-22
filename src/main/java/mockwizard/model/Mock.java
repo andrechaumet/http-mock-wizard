@@ -3,6 +3,7 @@ package mockwizard.model;
 public class Mock {
     private String path;
     private String method;
+    private Long delay;
     private HttpRequest key;
     private HttpResponse value;
 
@@ -20,6 +21,14 @@ public class Mock {
 
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    public Long getDelay() {
+        return delay;
+    }
+
+    public void setDelay(Long delay) {
+        this.delay = delay;
     }
 
     public HttpRequest getKey() {
