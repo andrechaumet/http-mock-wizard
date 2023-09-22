@@ -17,15 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
+public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandler {
 
     //TODO: Log
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockRequestsHandler.class);
 
     private final MockService service;
 
     @Autowired
-    public HttpMockHandler(MockService mockService) {
+    public HttpMockRequestsHandler(MockService mockService) {
         this.service = mockService;
     }
 
@@ -74,6 +74,7 @@ public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
         final HttpRequest model = new HttpRequest();
         model.setBody(extractBody(exchange.getRequestBody()));
         model.setHeaders(extractHeaders(exchange.getRequestHeaders()));
+        model.setParams(extractParams(exchange.getRequestURI().toString()));
         return model;
     }
 
@@ -86,6 +87,15 @@ public class HttpMockHandler implements com.sun.net.httpserver.HttpHandler {
             headersFormatted.add(header);
         }
         return headersFormatted;
+    }
+
+    private List<Param> extractParams(String path) {
+        //TODO: WIP, at this point I should probably start making a factory lol😅
+        if(path.contains("?")) {
+            final String[] split = path.split("?");
+        } else {
+            return null;
+        }
     }
 
     private String extractBody(final InputStream body) throws IOException {
