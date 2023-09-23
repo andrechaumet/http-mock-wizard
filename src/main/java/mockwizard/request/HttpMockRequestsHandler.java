@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -89,12 +90,21 @@ public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandl
         return headersFormatted;
     }
 
+    //TODO: create sub methods, refactor
     private List<Param> extractParams(String path) {
-        //TODO: WIP, at this point I should probably start making a factory lol😅
-        if(path.contains("?")) {
-            final String[] split = path.split("?");
+        List<Param> params;
+        if (path.contains("?")) {
+            params = new LinkedList<>();
+            String[] pairs = path.split("[&$]");
+            for (String pair : pairs) {
+                String[] parts = pair.split("=");
+                if (parts.length == 2) {
+                    params.add(new Param(parts[0], parts[1]));
+                }
+            }
+            return params;
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
