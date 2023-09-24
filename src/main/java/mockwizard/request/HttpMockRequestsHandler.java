@@ -95,7 +95,7 @@ public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandl
         List<Param> params;
         if (path.contains("?")) {
             params = new LinkedList<>();
-            String[] pairs = path.split("[&$]");
+            String[] pairs = path.split("&");
             for (String pair : pairs) {
                 String[] parts = pair.split("=");
                 if (parts.length == 2) {

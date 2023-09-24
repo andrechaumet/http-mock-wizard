@@ -1,10 +1,13 @@
 package mockwizard.exception;
 
-public enum DetailedException {
-    HEADERS_DONT_MATCH("TODO", 4002),
-    BODIES_DONT_MATCH("TODO", 4001);
+public enum HttpException {
+    BODY_NOT_VALID("TODO", 4001),
+    HEADERS_NOT_VALID("TODO", 4002),
+    PARAMS_NOT_VALID("TODO", 4002),
+    URI_NOT_FOUND("TODO", 4002),
+    ;
 
-    DetailedException(String message, int code) {
+    HttpException(String message, int code) {
         this.message = message;
         this.code = code;
     }

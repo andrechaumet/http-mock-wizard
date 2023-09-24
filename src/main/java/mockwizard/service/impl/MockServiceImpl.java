@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static mockwizard.exception.DetailedException.BODIES_DONT_MATCH;
-import static mockwizard.exception.DetailedException.HEADERS_DONT_MATCH;
+import static mockwizard.exception.HttpException.BODY_NOT_VALID;
+import static mockwizard.exception.HttpException.HEADERS_NOT_VALID;
 import static mockwizard.service.impl.RequestValidator.validBody;
 import static mockwizard.service.impl.RequestValidator.validHeaders;
 
@@ -39,10 +39,10 @@ public class MockServiceImpl implements MockService {
     //TODO: Create single method and then submethods for 3/n cases
     private void failIfKeysDontMatch(HttpRequest sent, HttpRequest found) {
         if(!validBody(sent, found)) {
-            throw new HttpMockWizardException(BODIES_DONT_MATCH);
+            throw new HttpMockWizardException(BODY_NOT_VALID);
         }
         if(!validHeaders(sent, found)) {
-            throw new HttpMockWizardException(HEADERS_DONT_MATCH);
+            throw new HttpMockWizardException(HEADERS_NOT_VALID);
         }
         /*if(!validParams(sent, found)) {
 

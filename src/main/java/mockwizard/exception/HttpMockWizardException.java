@@ -4,9 +4,9 @@ public class HttpMockWizardException extends RuntimeException {
     private int code;
     private String message;
 
-    public HttpMockWizardException(DetailedException detailedException) {
-        this.code = detailedException.getCode();
-        this.message = detailedException.getMessage();
+    public HttpMockWizardException(HttpException httpException) {
+        this.code = httpException.getCode();
+        this.message = httpException.getMessage();
     }
 
     public int getCode() {

@@ -18,6 +18,7 @@ public class MockConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockConfig.class);
     private static final Integer PORT = 8088;
+    private static final String BASE_PATH = "/";
     private final HttpMockRequestsHandler httpMockRequestsHandler;
 
     @Autowired
@@ -29,9 +30,9 @@ public class MockConfig {
     @Scheduled(initialDelayString = "1000", fixedRate = Long.MAX_VALUE)
     public void init() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        server.createContext("/", httpMockRequestsHandler);
+        server.createContext(BASE_PATH, httpMockRequestsHandler);
         server.start();
-        LOGGER.info("Started mock context in port [{}].", PORT);
+        LOGGER.info("Started mock context at port [{}].", PORT);
     }
 
 }
