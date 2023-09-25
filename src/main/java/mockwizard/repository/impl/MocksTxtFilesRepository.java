@@ -18,17 +18,20 @@ import static java.lang.String.format;
 public class MocksTxtFilesRepository implements MocksRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(MocksTxtFilesRepository.class);
 
-    private static final String BASE_PATH = "C:/Users/Andy/Desktop/mocks/";
+    //TODO: review later
+    private static final String BASE_PATH = "review";
     private static final String FILE_FORMAT = ".txt";
     private static final String PATH_FORMAT = BASE_PATH + "%s_%s" + FILE_FORMAT;
     private static final Gson GSON = new Gson();
 
-    private final Map<Character, Character> CONVERSION = new HashMap<Character, Character>() {{
-        put('/', '~');
-        put('~', '/');
-        put('?', '!');
-        put('!', '?');
-    }};
+    private static final Map<Character, Character> CONVERSION = new HashMap<>();
+
+    public MocksTxtFilesRepository() {
+        CONVERSION.put('/', '~');
+        CONVERSION.put('~', '/');
+        CONVERSION.put('?', '!');
+        CONVERSION.put('!', '?');
+    }
 
     @Override
     public Mock findByPathAndMethod(final String path, final String method) throws IOException {
