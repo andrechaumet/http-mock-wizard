@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
 public class RequestValidator {
     private static final JsonParser PARSER = new JsonParser();
 
-    //TODO:
-    private static final Logger LOGGER = LoggerFactory.getLogger(RequestValidator.class);
-
     public static boolean validBody(HttpRequest sent, HttpRequest found) {
         if (found.getBody() == null) return false;
         final JsonElement sentBody = PARSER.parse(sent.getBody().getValue());
@@ -48,5 +45,9 @@ public class RequestValidator {
             }
         }
         return true;
+    }
+
+    public static boolean validParams(HttpRequest sent, HttpRequest found) {
+
     }
 }
