@@ -6,55 +6,31 @@ import mockwizard.model.Header;
 import mockwizard.model.HttpRequest;
 import mockwizard.model.Param;
 
-
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RequestValidator {
     private static final JsonParser PARSER = new JsonParser();
 
     public static boolean validBody(HttpRequest sent, HttpRequest found) {
-        if (found.getBody() == null) return false;
+        if (found.getBody() == null) return true;
         final JsonElement sentBody = PARSER.parse(sent.getBody().getValue());
         final JsonElement foundBody = PARSER.parse(found.getBody().getValue());
         return sentBody.equals(foundBody);
     }
 
     public static boolean validHeaders(HttpRequest sent, HttpRequest found) {
-        if (found.getHeaders() != null) {
-            Map<String, List<String>> headersSent = sent.getHeaders()
-                    .stream()
-                    .collect(Collectors
-                            .toMap(
-                                    header -> header.getKey().toLowerCase(),
-                                    header -> header.getValues()
-                                            .stream()
-                                            .map(String::toLowerCase)
-                                            .collect(Collectors.toList())
-                            )
-                    );
-            for (Header header : found.getHeaders()) {
-                if (header.isRequired()) {
-                    final String requiredKey = header.getKey();
-                    final List<String> requiredValues = header.getValues();
-                    if (!headersSent.get(requiredKey.toLowerCase()).containsAll(requiredValues.stream().map(String::toLowerCase).collect(Collectors.toList()))) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+        final List<Header> headers = found.getHeaders();
+        if (headers == null) return true;
+        return found.getHeaders().stream()
+                .filter(Header::isRequired)
+                .allMatch(header -> sent.getHeaders().contains(header));
     }
 
     public static boolean validParams(HttpRequest sent, HttpRequest found) {
         List<Param> params = found.getParams();
-        if (params != null) {
-            return params.stream()
-                    .filter(Param::isRequired)
-                    .allMatch(param -> sent.getParams().contains(param));
-        } else {
-            return false;
-        }
+        if (params == null) return true;
+        return params.stream()
+                .filter(Param::isRequired)
+                .allMatch(param -> sent.getParams().contains(param));
     }
 }
