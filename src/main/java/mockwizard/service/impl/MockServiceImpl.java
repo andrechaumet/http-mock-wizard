@@ -34,16 +34,18 @@ public class MockServiceImpl implements MockService {
         return mock.getValue();
     }
 
-    //TODO: Create single method and then submethods for 3/n cases
+    //TODO: Create submethods, do not send httprequests, fragment 🥴
     private void failIfKeysDontMatch(HttpRequest sent, HttpRequest found) {
         if (!validBody(sent, found)) {
+            LOGGER.info("");
             throw new HttpMockWizardException(BODY_NOT_VALID);
         }
         if (!validHeaders(sent, found)) {
+            LOGGER.info("");
             throw new HttpMockWizardException(HEADERS_NOT_VALID);
         }
         if (!validParams(sent, found)) {
-            //TODO:
+            LOGGER.info("");
             throw new HttpMockWizardException(PARAMS_NOT_VALID);
         }
     }
