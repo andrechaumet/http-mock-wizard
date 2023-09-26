@@ -11,6 +11,7 @@ public class Header {
 
     public Header() {
         values = new ArrayList<>();
+        required = false;
     }
 
     public String getKey() {

@@ -16,7 +16,7 @@ public class Param {
         this.required = required;
     }
 
-    public Boolean getRequired() {
+    public Boolean isRequired() {
         return required;
     }
 

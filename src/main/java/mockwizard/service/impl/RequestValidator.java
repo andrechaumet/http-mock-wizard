@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import mockwizard.model.Header;
 import mockwizard.model.HttpRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import mockwizard.model.Param;
+
 
 import java.util.List;
 import java.util.Map;
@@ -48,6 +48,13 @@ public class RequestValidator {
     }
 
     public static boolean validParams(HttpRequest sent, HttpRequest found) {
-
+        List<Param> params = found.getParams();
+        if (params != null) {
+            return params.stream()
+                    .filter(Param::isRequired)
+                    .allMatch(param -> sent.getParams().contains(param));
+        } else {
+            return false;
+        }
     }
 }
