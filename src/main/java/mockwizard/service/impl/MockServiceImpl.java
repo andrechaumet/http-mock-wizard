@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 import static mockwizard.exception.HttpException.*;
-import static mockwizard.service.impl.RequestValidator.*;
+import static mockwizard.service.utils.RequestValidator.*;
 
 @Component
 public class MockServiceImpl implements MockService {
@@ -34,8 +34,8 @@ public class MockServiceImpl implements MockService {
         return mock.getValue();
     }
 
-    //TODO: Create submethods, do not send httprequests, fragment 🥴
-    private void failIfKeysDontMatch(HttpRequest sent, HttpRequest found) {
+    //TODO: Create submethod for 3 cases, do not send httprequests, fragment 🥴
+    private void failIfKeysDontMatch(final HttpRequest sent, final HttpRequest found) {
         if (!validBody(sent, found)) {
             LOGGER.info("");
             throw new HttpMockWizardException(BODY_NOT_VALID);
