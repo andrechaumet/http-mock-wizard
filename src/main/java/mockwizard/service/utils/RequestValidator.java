@@ -16,7 +16,7 @@ public class RequestValidator {
     }
 
     public static boolean validBody(final HttpRequest sent, final HttpRequest found) {
-        if (found.getBody() == null) return true;
+        if (found.getBody() == null || !found.getBody().isRequired()) return true;
         final JsonElement sentBody = PARSER.parse(sent.getBody().getValue());
         final JsonElement foundBody = PARSER.parse(found.getBody().getValue());
         return sentBody.equals(foundBody);
@@ -31,7 +31,7 @@ public class RequestValidator {
     }
 
     public static boolean validParams(final HttpRequest sent, final HttpRequest found) {
-        List<Param> params = found.getParams();
+        final List<Param> params = found.getParams();
         if (params == null) return true;
         return params.stream()
                 .filter(Param::isRequired)
