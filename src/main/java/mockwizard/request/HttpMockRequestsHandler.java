@@ -32,6 +32,7 @@ public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandl
         new Thread(() -> {
             try {
                 handleAsync(exchange);
+                //TODO: exception handling, refactor, create metrics & save error data as file
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
