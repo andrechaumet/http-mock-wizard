@@ -24,7 +24,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
     private static final String PATH_FORMAT = BASE_PATH + "%s_%s" + FILE_FORMAT;
     private static final Gson GSON = new Gson();
 
-    private static final Map<Character, Character> CONVERSION = new HashMap<>();
+    private static final Map<Character, Character> CONVERSION = new HashMap<>(4);
 
     public MocksTxtFilesRepository() {
         CONVERSION.put('/', '~');

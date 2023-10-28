@@ -1,4 +1,4 @@
-package mockwizard.request;
+package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
 import mockwizard.exception.HttpMockWizardException;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static mockwizard.request.RequestFactory.convertToRequestModel;
+import static mockwizard.servlet.RequestFactory.convertToRequestModel;
 
 @Component
 public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandler {

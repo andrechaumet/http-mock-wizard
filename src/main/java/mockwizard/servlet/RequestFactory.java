@@ -1,4 +1,4 @@
-package mockwizard.request;
+package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
 import mockwizard.model.Header;
