@@ -15,6 +15,8 @@ import java.util.Map;
 public class RequestFactory {
 
     private static final String PARAMS_START = "?";
+    private static final String PARAM_PLUS = "&";
+    private static final String PARAM_VALUE = "=";
 
     public static HttpRequest convertToRequestModel(final HttpExchange exchange) throws IOException {
         final HttpRequest model = new HttpRequest();
@@ -35,15 +37,15 @@ public class RequestFactory {
         return headersFormatted;
     }
 
-    private static List<Param> extractParams(String path) {
+    private static List<Param> extractParams(final String path) {
         return (path.contains(PARAMS_START)) ? pathToParams(path) : Collections.emptyList();
     }
 
-    private static List<Param> pathToParams(String path) {
-        List<Param> params = new LinkedList<>();
-        String[] pairs = path.split("&");
+    private static List<Param> pathToParams(final String path) {
+        final List<Param> params = new LinkedList<>();
+        final String[] pairs = path.split(PARAM_PLUS);
         for (String pair : pairs) {
-            String[] parts = pair.split("=");
+            final String[] parts = pair.split(PARAM_VALUE);
             if (parts.length == 2) {
                 params.add(new Param(parts[0], parts[1]));
             }
