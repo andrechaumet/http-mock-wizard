@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public class RequestFactory {
+
+    private static final String PARAMS_START = "?";
+
     public static HttpRequest convertToRequestModel(final HttpExchange exchange) throws IOException {
         final HttpRequest model = new HttpRequest();
         model.setBody(extractBody(exchange.getRequestBody()));
@@ -32,23 +35,22 @@ public class RequestFactory {
         return headersFormatted;
     }
 
-    //TODO: create sub methods, refactor
     private static List<Param> extractParams(String path) {
-        List<Param> params;
-        if (path.contains("?")) {
-            params = new LinkedList<>();
-            String[] pairs = path.split("&");
-            for (String pair : pairs) {
-                String[] parts = pair.split("=");
-                if (parts.length == 2) {
-                    params.add(new Param(parts[0], parts[1]));
-                }
-            }
-            return params;
-        } else {
-            return Collections.emptyList();
-        }
+        return (path.contains(PARAMS_START)) ? pathToParams(path) : Collections.emptyList();
     }
+
+    private static List<Param> pathToParams(String path) {
+        List<Param> params = new LinkedList<>();
+        String[] pairs = path.split("&");
+        for (String pair : pairs) {
+            String[] parts = pair.split("=");
+            if (parts.length == 2) {
+                params.add(new Param(parts[0], parts[1]));
+            }
+        }
+        return params;
+    }
+
 
     private static String extractBody(final InputStream body) throws IOException {
         final StringBuilder requestBodyBuilder = new StringBuilder();
