@@ -1,7 +1,7 @@
 package mockwizard.repository.impl;
 
 import com.google.gson.Gson;
-import mockwizard.model.Mock;
+import mockwizard.model.base.Mock;
 import mockwizard.repository.MocksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

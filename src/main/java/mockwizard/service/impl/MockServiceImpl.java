@@ -1,9 +1,9 @@
 package mockwizard.service.impl;
 
 import mockwizard.exception.HttpMockWizardException;
-import mockwizard.model.HttpRequest;
-import mockwizard.model.HttpResponse;
-import mockwizard.model.Mock;
+import mockwizard.model.base.HttpRequest;
+import mockwizard.model.base.HttpResponse;
+import mockwizard.model.base.Mock;
 import mockwizard.repository.MocksRepository;
 import mockwizard.service.MockService;
 import org.slf4j.Logger;

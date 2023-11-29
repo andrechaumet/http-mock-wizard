@@ -1,6 +1,6 @@
 package mockwizard.repository;
 
-import mockwizard.model.Mock;
+import mockwizard.model.base.Mock;
 
 import java.io.IOException;
 

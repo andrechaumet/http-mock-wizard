@@ -1,4 +1,4 @@
-package mockwizard.model;
+package mockwizard.model.component;
 
 
 import java.util.ArrayList;

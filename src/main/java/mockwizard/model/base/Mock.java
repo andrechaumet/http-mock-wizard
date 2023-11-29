@@ -1,4 +1,4 @@
-package mockwizard.model;
+package mockwizard.model.base;
 
 public class Mock {
     private String path;

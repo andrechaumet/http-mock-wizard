@@ -2,7 +2,8 @@ package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
 import mockwizard.exception.HttpMockWizardException;
-import mockwizard.model.*;
+import mockwizard.model.base.HttpRequest;
+import mockwizard.model.base.HttpResponse;
 import mockwizard.service.MockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

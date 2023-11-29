@@ -1,4 +1,4 @@
-package mockwizard.model;
+package mockwizard.model.component;
 
 public class Body {
     private Boolean required;

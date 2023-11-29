@@ -1,4 +1,8 @@
-package mockwizard.model;
+package mockwizard.model.base;
+
+import mockwizard.model.component.Body;
+import mockwizard.model.component.Header;
+import mockwizard.model.component.Param;
 
 import java.util.List;
 

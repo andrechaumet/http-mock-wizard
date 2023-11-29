@@ -1,7 +1,7 @@
 package mockwizard.service;
 
-import mockwizard.model.HttpRequest;
-import mockwizard.model.HttpResponse;
+import mockwizard.model.base.HttpRequest;
+import mockwizard.model.base.HttpResponse;
 
 import java.io.IOException;
 

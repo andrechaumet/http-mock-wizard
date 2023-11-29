@@ -1,9 +1,9 @@
 package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
-import mockwizard.model.Header;
-import mockwizard.model.HttpRequest;
-import mockwizard.model.Param;
+import mockwizard.model.component.Header;
+import mockwizard.model.base.HttpRequest;
+import mockwizard.model.component.Param;
 
 import java.io.IOException;
 import java.io.InputStream;

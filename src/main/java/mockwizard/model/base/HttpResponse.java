@@ -1,4 +1,4 @@
-package mockwizard.model;
+package mockwizard.model.base;
 
 import java.util.List;
 import java.util.Map;

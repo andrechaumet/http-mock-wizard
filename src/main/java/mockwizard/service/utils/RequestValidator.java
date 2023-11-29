@@ -2,9 +2,9 @@ package mockwizard.service.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import mockwizard.model.Header;
-import mockwizard.model.HttpRequest;
-import mockwizard.model.Param;
+import mockwizard.model.component.Header;
+import mockwizard.model.base.HttpRequest;
+import mockwizard.model.component.Param;
 
 import java.util.List;
 
