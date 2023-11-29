@@ -18,10 +18,10 @@ import java.util.concurrent.Executors;
 import static mockwizard.servlet.RequestFactory.convertToRequestModel;
 
 @Component
-public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandler {
+public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
 
     //TODO: Log
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockRequestsHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockServlet.class);
     //TODO: remove hardcoded, configure properties
     private static final Integer POOL_SIZE = 20;
 
@@ -30,7 +30,7 @@ public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandl
 
 
     @Autowired
-    public HttpMockRequestsHandler(MockService mockService) {
+    public HttpMockServlet(MockService mockService) {
         this.service = mockService;
         this.executorService = Executors.newFixedThreadPool(POOL_SIZE);
     }
@@ -42,9 +42,10 @@ public class HttpMockRequestsHandler implements com.sun.net.httpserver.HttpHandl
             try {
                 handleAsync(exchange);
             } catch (Exception e) {
-                //TODO: exception handling, refactor, log, create metrics & save error data as file
+                //TODO: exchange handling, exception handling, refactor, log, create metrics & save error data as file
                 LOGGER.error("");
                 e.printStackTrace();
+                //exchange.close();
             }
         });
     }
