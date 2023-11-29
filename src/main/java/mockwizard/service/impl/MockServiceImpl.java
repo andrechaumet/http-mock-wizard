@@ -1,9 +1,10 @@
 package mockwizard.service.impl;
 
 import mockwizard.exception.HttpMockWizardException;
+import mockwizard.model.ReadOnlyMock;
 import mockwizard.model.base.HttpRequest;
 import mockwizard.model.base.HttpResponse;
-import mockwizard.model.base.Mock;
+import mockwizard.model.Mock;
 import mockwizard.repository.MocksRepository;
 import mockwizard.service.MockService;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class MockServiceImpl implements MockService {
 
     //TODO: WIP
     public HttpResponse mock(final String path, final String method, final HttpRequest request) throws IOException {
-        final Mock mock = repository.findByPathAndMethod(path, method);
+        final ReadOnlyMock mock = repository.findByPathAndMethod(path, method);
         failIfKeysDontMatch(request, mock.getKey());
         return mock.getValue();
     }

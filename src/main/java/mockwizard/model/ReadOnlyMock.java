@@ -1,5 +1,16 @@
 package mockwizard.model;
 
-//TODO: export getters
+import mockwizard.model.base.HttpRequest;
+import mockwizard.model.base.HttpResponse;
+
 public interface ReadOnlyMock {
+    String getPath();
+
+    String getMethod();
+
+    Long getDelay();
+
+    HttpRequest getKey();
+
+    HttpResponse getValue();
 }

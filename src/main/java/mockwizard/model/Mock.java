@@ -1,12 +1,16 @@
-package mockwizard.model.base;
+package mockwizard.model;
 
-public class Mock {
+import mockwizard.model.base.HttpRequest;
+import mockwizard.model.base.HttpResponse;
+
+public class Mock implements ReadOnlyMock {
     private String path;
     private String method;
     private Long delay;
     private HttpRequest key;
     private HttpResponse value;
 
+    @Override
     public String getPath() {
         return path;
     }
@@ -15,6 +19,7 @@ public class Mock {
         this.path = path;
     }
 
+    @Override
     public String getMethod() {
         return method;
     }
@@ -23,6 +28,7 @@ public class Mock {
         this.method = method;
     }
 
+    @Override
     public Long getDelay() {
         return delay;
     }
@@ -31,6 +37,7 @@ public class Mock {
         this.delay = delay;
     }
 
+    @Override
     public HttpRequest getKey() {
         return key;
     }
@@ -39,6 +46,7 @@ public class Mock {
         this.key = key;
     }
 
+    @Override
     public HttpResponse getValue() {
         return value;
     }
