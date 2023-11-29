@@ -10,6 +10,7 @@ import java.io.IOException;
 @SpringBootApplication
 public class App {
 
+    //TODO: Used for instance managing, fix
     private final MockConfig mockConfig;
 
     @Autowired
@@ -17,7 +18,7 @@ public class App {
         this.mockConfig = mockConfig;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(App.class);
         springApplication.run(args);
     }

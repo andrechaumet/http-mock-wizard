@@ -1,8 +1,8 @@
 package mockwizard.exception;
 
 public class HttpMockWizardException extends RuntimeException {
-    private int code;
-    private String message;
+    private final int code;
+    private final String message;
 
     public HttpMockWizardException(HttpException httpException) {
         this.code = httpException.getCode();
@@ -13,16 +13,9 @@ public class HttpMockWizardException extends RuntimeException {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     @Override
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

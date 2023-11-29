@@ -18,6 +18,9 @@ public class RequestFactory {
     private static final String PARAM_PLUS = "&";
     private static final String PARAM_VALUE = "=";
 
+    private RequestFactory() {
+    }
+
     public static HttpRequest convertToRequestModel(final HttpExchange exchange) throws IOException {
         final HttpRequest model = new HttpRequest();
         model.setBody(extractBody(exchange.getRequestBody()));
