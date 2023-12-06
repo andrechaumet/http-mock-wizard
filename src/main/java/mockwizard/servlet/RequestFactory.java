@@ -22,6 +22,7 @@ public class RequestFactory {
     private static final Integer KEY_POSITION = 0;
     private static final Integer VALUE_POSITION = 1;
     private static final Integer EXPECTED_KEY_VALUE_LENGTH = 2;
+    private static final Integer BUFFER_SIZE = 1024;
 
     private RequestFactory() {
     }
@@ -69,7 +70,7 @@ public class RequestFactory {
     private static String extractBody(final InputStream body) throws IOException {
         final StringBuilder requestBodyBuilder = new StringBuilder();
         int bytesRead;
-        final byte[] buffer = new byte[1024];
+        final byte[] buffer = new byte[BUFFER_SIZE];
         while ((bytesRead = body.read(buffer)) != -1) {
             requestBodyBuilder.append(new String(buffer, 0, bytesRead));
         }
