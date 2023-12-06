@@ -20,6 +20,7 @@ public class RequestFactory {
     private static final String PARAMS_START = "?";
     private static final String PARAM_PLUS = "&";
     private static final String PARAM_VALUE = "=";
+
     private static final Integer KEY_POSITION = 0;
     private static final Integer VALUE_POSITION = 1;
     private static final Integer EXPECTED_KEY_VALUE_LENGTH = 2;
@@ -30,7 +31,7 @@ public class RequestFactory {
     private RequestFactory() {
     }
 
-    public static HttpRequest convertToRequestModel(final HttpExchange exchange) throws IOException {
+    public static HttpRequest createRequest(final HttpExchange exchange) throws IOException {
         return builder()
                 .withBody(extractBody(exchange.getRequestBody()))
                 .withHeaders(extractHeaders(exchange.getRequestHeaders()))

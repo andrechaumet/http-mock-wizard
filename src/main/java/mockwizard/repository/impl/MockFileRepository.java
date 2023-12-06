@@ -16,18 +16,19 @@ import static java.lang.String.format;
 
 //TODO: Create an inactive mocks folder
 @Repository
-public class MocksTxtFilesRepository implements MocksRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MocksTxtFilesRepository.class);
+public class MockFileRepository implements MocksRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockFileRepository.class);
 
     //TODO: review later
     private static final String BASE_PATH = "review";
     private static final String FILE_FORMAT = ".txt";
     private static final String PATH_FORMAT = BASE_PATH + "%s_%s" + FILE_FORMAT;
+    private static final String NEXT_LINE = "\n";
     private static final Gson GSON = new Gson();
 
     private static final Map<Character, Character> CONVERSION = new HashMap<>(4);
 
-    public MocksTxtFilesRepository() {
+    public MockFileRepository() {
         CONVERSION.put('/', '~');
         CONVERSION.put('~', '/');
         CONVERSION.put('?', '!');
@@ -56,7 +57,7 @@ public class MocksTxtFilesRepository implements MocksRepository {
         try (BufferedReader reader = new BufferedReader(new FileReader(mockFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+                content.append(line).append(NEXT_LINE);
             }
         }
         return GSON.fromJson(content.toString(), Mock.class);
