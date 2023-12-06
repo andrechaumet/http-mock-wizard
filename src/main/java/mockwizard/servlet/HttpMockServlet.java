@@ -44,7 +44,6 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
         try {
             handleResponse(exchange, handleRequest(exchange));
         } catch (final Exception e) {
-            //TODO: create class/factory for this
             LOGGER.error("Generic error while handling mock request [{}].", e.getMessage());
         } finally {
             exchange.close();

@@ -9,6 +9,11 @@ public class HttpMockWizardException extends RuntimeException {
         this.message = httpException.getMessage();
     }
 
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
+
     public int getCode() {
         return code;
     }
