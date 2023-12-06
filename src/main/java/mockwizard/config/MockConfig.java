@@ -25,24 +25,20 @@ public class MockConfig {
     private static final String BASE_PATH = "/";
 
     private final HttpMockServlet httpMockServlet;
-    private HttpServer server;
+    private final HttpServer server;
 
     @Autowired
-    public MockConfig(HttpMockServlet httpMockServlet) {
+    public MockConfig(HttpMockServlet httpMockServlet, HttpServer server) throws IOException {
         this.httpMockServlet = httpMockServlet;
+        this.server = HttpServer.create(new InetSocketAddress(PORT), DEFAULT_BACKLOG);
     }
 
     //TODO: hotfix solve later
     @Scheduled(initialDelayString = "1000", fixedRate = Long.MAX_VALUE)
     public void init() {
-        try {
-            server = HttpServer.create(new InetSocketAddress(PORT), DEFAULT_BACKLOG);
-            server.createContext(BASE_PATH, httpMockServlet);
-            server.start();
-            LOGGER.info("Started mock context at port [{}].", PORT);
-        } catch (IOException e) {
-            LOGGER.error("Error starting the mock server: [{}].", e.getMessage(), e);
-        }
+        server.createContext(BASE_PATH, httpMockServlet);
+        server.start();
+        LOGGER.info("Started mock context at port [{}].", PORT);
     }
 
     @PreDestroy
