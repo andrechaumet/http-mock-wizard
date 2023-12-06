@@ -56,8 +56,7 @@ public class RequestFactory {
 
     private static List<Param> pathToParams(final String path) {
         final List<Param> params = new LinkedList<>();
-        final String[] pairs = path.split(PARAM_PLUS);
-        for (String pair : pairs) {
+        for (String pair : path.split(PARAM_PLUS)) {
             final String[] parts = pair.split(PARAM_VALUE);
             if (containsValue(parts)) {
                 params.add(new Param(parts[KEY_POSITION], parts[VALUE_POSITION]));
