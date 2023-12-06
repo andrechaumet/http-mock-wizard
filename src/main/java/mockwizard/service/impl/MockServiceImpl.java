@@ -19,7 +19,7 @@ import static mockwizard.service.utils.RequestValidator.*;
 
 @Component
 public class MockServiceImpl implements MockService {
-
+    //TODO: Log
     private static final Logger LOGGER = LoggerFactory.getLogger(MockServiceImpl.class);
 
     private final MocksRepository repository;
@@ -39,15 +39,12 @@ public class MockServiceImpl implements MockService {
     //TODO: Create submethod for 3 cases, do not send httprequests, fragment 🥴
     private void failIfKeysDontMatch(final HttpRequest sent, final HttpRequest found) {
         if (!validBody(sent, found)) {
-            LOGGER.info("");
             throw new HttpMockWizardException(BODY_NOT_VALID);
         }
         if (!validHeaders(sent, found)) {
-            LOGGER.info("");
             throw new HttpMockWizardException(HEADERS_NOT_VALID);
         }
         if (!validParams(sent, found)) {
-            LOGGER.info("");
             throw new HttpMockWizardException(PARAMS_NOT_VALID);
         }
     }
