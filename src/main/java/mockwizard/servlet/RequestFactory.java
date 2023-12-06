@@ -12,11 +12,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.emptyList;
+
 public class RequestFactory {
 
     private static final String PARAMS_START = "?";
     private static final String PARAM_PLUS = "&";
     private static final String PARAM_VALUE = "=";
+    private static final Integer KEY_POSITION = 0;
+    private static final Integer VALUE_POSITION = 1;
+    private static final Integer EXPECTED_KEY_VALUE_LENGTH = 2;
 
     private RequestFactory() {
     }
@@ -41,7 +46,7 @@ public class RequestFactory {
     }
 
     private static List<Param> extractParams(final String path) {
-        return (path.contains(PARAMS_START)) ? pathToParams(path) : Collections.emptyList();
+        return (path.contains(PARAMS_START)) ? pathToParams(path) : emptyList();
     }
 
     private static List<Param> pathToParams(final String path) {
@@ -49,11 +54,15 @@ public class RequestFactory {
         final String[] pairs = path.split(PARAM_PLUS);
         for (String pair : pairs) {
             final String[] parts = pair.split(PARAM_VALUE);
-            if (parts.length == 2) {
-                params.add(new Param(parts[0], parts[1]));
+            if (containsValue(parts)) {
+                params.add(new Param(parts[KEY_POSITION], parts[VALUE_POSITION]));
             }
         }
         return params;
+    }
+
+    private static boolean containsValue(String[] part) {
+        return part.length == EXPECTED_KEY_VALUE_LENGTH;
     }
 
 
