@@ -12,7 +12,6 @@ public class RequestValidator {
     private static final JsonParser PARSER = new JsonParser();
 
     private RequestValidator() {
-
     }
 
     public static boolean validBody(final HttpRequest sent, final HttpRequest found) {

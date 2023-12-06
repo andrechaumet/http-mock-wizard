@@ -79,6 +79,6 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
             output.write(responseBody.getBytes());
         }
         exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), responseBody.getBytes().length);
-        exchange.getResponseHeaders().putAll(response.getHeaders());
+        exchange.getResponseHeaders().putAll(response.getHeadersAsResponse());
     }
 }
