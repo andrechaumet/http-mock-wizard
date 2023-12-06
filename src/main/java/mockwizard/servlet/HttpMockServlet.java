@@ -1,7 +1,6 @@
 package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
-import mockwizard.exception.HttpMockWizardException;
 import mockwizard.model.base.HttpRequest;
 import mockwizard.model.base.HttpResponse;
 import mockwizard.service.MockService;
@@ -19,12 +18,9 @@ import static mockwizard.servlet.RequestFactory.convertToRequestModel;
 
 @Component
 public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
-
     //TODO: Log
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockServlet.class);
-    //TODO: remove hardcoded, configure properties
     private static final Integer POOL_SIZE = 20;
-
     private final MockService service;
     private final ExecutorService executorService;
 
@@ -39,28 +35,17 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
     @Override
     public void handle(final HttpExchange exchange) {
         executorService.submit(() -> {
-            try {
-                handleAsync(exchange);
-            } catch (Exception e) {
-                //TODO: exchange handling, exception handling, refactor, log, create metrics & save error data as file
-                LOGGER.error("");
-                e.printStackTrace();
-                //exchange.close();
-            }
+            handleAsync(exchange);
         });
     }
 
     //TODO: Store in the mock file how much delay I want the response to return.
-    private void handleAsync(final HttpExchange exchange) throws IOException {
+    private void handleAsync(final HttpExchange exchange) {
         try {
             handleResponse(exchange, handleRequest(exchange));
-        } catch (final HttpMockWizardException e) {
+        } catch (final Exception e) {
             //TODO: create class/factory for this
-            exchange.sendResponseHeaders(e.getCode(), e.getMessage().length());
-            exchange.getResponseBody().write(e.getMessage().getBytes());
-        } catch (final IOException e) {
-            //TODO:
-            exchange.sendResponseHeaders(500, 0);
+            LOGGER.error("Generic error while handling mock request [{}].", e.getMessage());
         } finally {
             exchange.close();
         }
