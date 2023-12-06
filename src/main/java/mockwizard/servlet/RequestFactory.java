@@ -7,12 +7,13 @@ import mockwizard.model.component.Param;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.emptyList;
+import static mockwizard.model.base.HttpRequest.Builder.builder;
 
 public class RequestFactory {
 
@@ -23,16 +24,18 @@ public class RequestFactory {
     private static final Integer VALUE_POSITION = 1;
     private static final Integer EXPECTED_KEY_VALUE_LENGTH = 2;
     private static final Integer BUFFER_SIZE = 1024;
+    private static final Integer OFFSET = 0;
+    private static final Integer NO_MORE_DATA = -1;
 
     private RequestFactory() {
     }
 
     public static HttpRequest convertToRequestModel(final HttpExchange exchange) throws IOException {
-        final HttpRequest model = new HttpRequest();
-        model.setBody(extractBody(exchange.getRequestBody()));
-        model.setHeaders(extractHeaders(exchange.getRequestHeaders()));
-        model.setParams(extractParams(exchange.getRequestURI().toString()));
-        return model;
+        return builder()
+                .withBody(extractBody(exchange.getRequestBody()))
+                .withHeaders(extractHeaders(exchange.getRequestHeaders()))
+                .withParams(extractParams(exchange.getRequestURI()))
+                .build();
     }
 
     private static List<Header> extractHeaders(final Map<String, List<String>> headers) {
@@ -46,7 +49,8 @@ public class RequestFactory {
         return headersFormatted;
     }
 
-    private static List<Param> extractParams(final String path) {
+    private static List<Param> extractParams(final URI uri) {
+        final String path = uri.toString();
         return (path.contains(PARAMS_START)) ? pathToParams(path) : emptyList();
     }
 
@@ -66,13 +70,12 @@ public class RequestFactory {
         return part.length == EXPECTED_KEY_VALUE_LENGTH;
     }
 
-
     private static String extractBody(final InputStream body) throws IOException {
         final StringBuilder requestBodyBuilder = new StringBuilder();
         int bytesRead;
         final byte[] buffer = new byte[BUFFER_SIZE];
-        while ((bytesRead = body.read(buffer)) != -1) {
-            requestBodyBuilder.append(new String(buffer, 0, bytesRead));
+        while ((bytesRead = body.read(buffer)) != NO_MORE_DATA) {
+            requestBodyBuilder.append(new String(buffer, OFFSET, bytesRead));
         }
         return requestBodyBuilder.toString();
     }

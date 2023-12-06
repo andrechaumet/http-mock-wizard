@@ -34,14 +34,14 @@ public class MockConfig {
 
     //TODO: hotfix solve later
     @Scheduled(initialDelayString = "1000", fixedRate = Long.MAX_VALUE)
-    public void init() throws IOException {
+    public void init() {
         try {
             server = HttpServer.create(new InetSocketAddress(PORT), DEFAULT_BACKLOG);
             server.createContext(BASE_PATH, httpMockServlet);
             server.start();
             LOGGER.info("Started mock context at port [{}].", PORT);
         } catch (IOException e) {
-            LOGGER.error("Error starting the mock server: {}", e.getMessage(), e);
+            LOGGER.error("Error starting the mock server: [{}].", e.getMessage(), e);
         }
     }
 
