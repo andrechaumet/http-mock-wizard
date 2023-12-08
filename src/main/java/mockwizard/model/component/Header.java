@@ -21,8 +21,8 @@ public class Header {
         return required;
     }
 
-    public void notRequired() {
-        this.required = false;
+    public void require() {
+        this.required = true;
     }
 
     public List<String> getValues() {
