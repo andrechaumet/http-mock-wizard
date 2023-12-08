@@ -22,7 +22,7 @@ public class Header {
     }
 
     public void require() {
-        this.required = true;
+        this.required = !required;
     }
 
     public List<String> getValues() {
