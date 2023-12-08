@@ -35,11 +35,6 @@ public class HttpRequest {
         this.body = body;
     }
 
-    private void setBody(String value) {
-        this.body = new Body(value);
-    }
-
-
     public static final class Builder {
         private List<Header> headers;
         private List<Param> params;

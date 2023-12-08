@@ -8,15 +8,15 @@ import javax.persistence.*;
 public class MockEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;  // Añadido un campo id como clave primaria
+    private Long id;
     private String path;
     private String method;
     private Long delay;
-
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "MOCK_ID")
     private HttpRequestEntity key;
-
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "MOCK_ID")
     private HttpResponseEntity value;
 
     public Long getId() {

@@ -8,9 +8,7 @@ import java.util.Map;
 
 public class HttpResponse {
     private String httpStatusCode;
-
     private List<Header> headers;
-
     private String body;
 
     public String getHttpStatusCode() {
