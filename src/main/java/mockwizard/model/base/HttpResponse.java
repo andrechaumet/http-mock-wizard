@@ -15,25 +15,9 @@ public class HttpResponse {
         return httpStatusCode;
     }
 
-    public void setHttpStatusCode(String httpStatusCode) {
-        this.httpStatusCode = httpStatusCode;
-    }
-
-    public List<Header> getHeaders() {
-        return headers;
-    }
-
-    public void setHeaders(List<Header> headers) {
-        this.headers = headers;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public Map<String, List<String>> getHeadersAsResponse() {
         Map<String, List<String>> responseHeaders = new HashMap<>();
-        for(Header header : headers) {
+        for (Header header : headers) {
             String key = header.getKey();
             List<String> values = header.getValues();
             if (key != null && values != null) {
@@ -43,8 +27,12 @@ public class HttpResponse {
         return responseHeaders;
     }
 
+    public List<Header> getHeaders() {
+        return headers;
+    }
+
+
     public String getBody() {
         return body;
     }
-
 }

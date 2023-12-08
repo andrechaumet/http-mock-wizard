@@ -19,12 +19,11 @@ import static mockwizard.servlet.RequestFactory.createRequest;
 
 @Component
 public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
-    //TODO: Log
+
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockServlet.class);
     private static final Integer POOL_SIZE = 20;
     private final MockService service;
     private final ExecutorService executorService;
-
 
     @Autowired
     public HttpMockServlet(MockService mockService) {
@@ -32,12 +31,9 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
         this.executorService = Executors.newFixedThreadPool(POOL_SIZE);
     }
 
-
     @Override
     public void handle(final HttpExchange exchange) {
-        executorService.submit(() -> {
-            handleAsync(exchange);
-        });
+        executorService.submit(() -> handleAsync(exchange));
     }
 
     //TODO: Store in the mock file how much delay I want the response to return.
@@ -60,8 +56,8 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
 
     private void handleResponse(final HttpExchange exchange, final HttpResponse response) throws IOException {
         writeResponseBody(exchange, response);
-        sendResponseHeaders(exchange, response);
         setResponseHeaders(exchange, response);
+        sendResponseHeaders(exchange, response);
     }
 
     private void writeResponseBody(HttpExchange exchange, HttpResponse response) throws IOException {

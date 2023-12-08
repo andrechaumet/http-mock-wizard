@@ -1,4 +1,4 @@
-package mockwizard.service.utils;
+package mockwizard.service.validator;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;

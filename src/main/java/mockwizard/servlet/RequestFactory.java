@@ -42,10 +42,7 @@ public class RequestFactory {
     private static List<Header> extractHeaders(final Map<String, List<String>> headers) {
         final List<Header> headersFormatted = new LinkedList<>();
         for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            final Header header = new Header();
-            header.setKey(entry.getKey());
-            header.addValue(entry.getValue());
-            headersFormatted.add(header);
+            headersFormatted.add(new Header(entry.getKey(), entry.getValue()));
         }
         return headersFormatted;
     }
@@ -79,4 +76,5 @@ public class RequestFactory {
         }
         return requestBodyBuilder.toString();
     }
+
 }
