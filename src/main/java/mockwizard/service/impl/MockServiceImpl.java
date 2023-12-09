@@ -25,8 +25,8 @@ public class MockServiceImpl implements MockService {
     }
 
     //TODO: WIP
-    public HttpResponse mock(final String path, final String method, final HttpRequest request) throws IOException {
-        final ReadOnlyMock mock = repository.findByPathAndMethod(path, method);
+    public HttpResponse mock(final String uri, final String method, final HttpRequest request) throws IOException {
+        final ReadOnlyMock mock = repository.findByUriAndMethod(uri, method);
         failIfKeyDontMatch(request, mock.getKey());
         return mock.getValue();
     }
