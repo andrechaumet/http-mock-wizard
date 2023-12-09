@@ -11,10 +11,6 @@ public class HttpResponse {
     private List<Header> headers;
     private String body;
 
-    public String getHttpStatusCode() {
-        return httpStatusCode;
-    }
-
     public Map<String, List<String>> getHeadersAsResponse() {
         Map<String, List<String>> responseHeaders = new HashMap<>();
         for (Header header : headers) {
@@ -27,10 +23,13 @@ public class HttpResponse {
         return responseHeaders;
     }
 
+    public String getHttpStatusCode() {
+        return httpStatusCode;
+    }
+
     public List<Header> getHeaders() {
         return headers;
     }
-
 
     public String getBody() {
         return body;

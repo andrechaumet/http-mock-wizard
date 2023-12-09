@@ -1,7 +1,6 @@
 package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import mockwizard.model.base.HttpRequest;
 import mockwizard.model.base.HttpResponse;
 import mockwizard.service.MockService;
@@ -15,7 +14,7 @@ import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static mockwizard.servlet.RequestFactory.createRequest;
+import static mockwizard.servlet.RequestCreator.createRequest;
 
 @Component
 public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
@@ -49,9 +48,9 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
 
     private HttpResponse handleRequest(final HttpExchange exchange) throws IOException {
         final HttpRequest request = createRequest(exchange);
-        final String httpMethod = exchange.getRequestMethod();
-        final String path = exchange.getRequestURI().toString();
-        return service.mock(path, httpMethod, request);
+        final String method = exchange.getRequestMethod();
+        final String uri = exchange.getRequestURI().toString();
+        return service.mock(uri, method, request);
     }
 
     private void handleResponse(final HttpExchange exchange, final HttpResponse response) throws IOException {

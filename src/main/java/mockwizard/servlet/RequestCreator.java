@@ -15,7 +15,7 @@ import java.util.Map;
 import static java.util.Collections.emptyList;
 import static mockwizard.model.base.HttpRequest.Builder.builder;
 
-public class RequestFactory {
+public class RequestCreator {
 
     private static final String PARAMS_START = "?";
     private static final String PARAM_PLUS = "&";
@@ -28,7 +28,7 @@ public class RequestFactory {
     private static final Integer OFFSET = 0;
     private static final Integer NO_MORE_DATA = -1;
 
-    private RequestFactory() {
+    private RequestCreator() {
     }
 
     public static HttpRequest createRequest(final HttpExchange exchange) throws IOException {

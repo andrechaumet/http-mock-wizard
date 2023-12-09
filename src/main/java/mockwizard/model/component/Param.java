@@ -1,8 +1,8 @@
 package mockwizard.model.component;
 
 public class Param {
-    private String key;
-    private String value;
+    private final String key;
+    private final String value;
     private Boolean required;
 
     public Param(String key, String value) {
@@ -20,23 +20,12 @@ public class Param {
         return required;
     }
 
-    public void setRequired(Boolean required) {
-        this.required = required;
-    }
-
     public String getKey() {
         return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
 }
