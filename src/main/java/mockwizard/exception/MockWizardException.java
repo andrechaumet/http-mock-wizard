@@ -1,12 +1,12 @@
 package mockwizard.exception;
 
-public class HttpMockWizardException extends RuntimeException {
+public class MockWizardException extends RuntimeException {
     private final int code;
     private final String message;
 
-    public HttpMockWizardException(HttpException httpException) {
-        this.code = httpException.getCode();
-        this.message = httpException.getMessage();
+    public MockWizardException(DetailedException detailedException) {
+        this.code = detailedException.getCode();
+        this.message = detailedException.getMessage();
     }
 
     @Override
