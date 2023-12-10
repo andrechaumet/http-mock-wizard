@@ -1,8 +1,8 @@
 package mockwizard.model.component;
 
 public class Body {
-    private Boolean required;
-    private String value;
+    private final Boolean required;
+    private final String value;
 
     public Body(String value) {
         this.value = value;

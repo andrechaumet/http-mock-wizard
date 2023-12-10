@@ -6,7 +6,7 @@ import mockwizard.model.base.HttpResponse;
 public class Mock implements ReadOnlyMock {
     private String path;
     private String method;
-    private Long delay;
+    private Long delayMillis;
     private HttpRequest key;
     private HttpResponse value;
 
@@ -29,12 +29,12 @@ public class Mock implements ReadOnlyMock {
     }
 
     @Override
-    public Long getDelay() {
-        return delay;
+    public Long getDelayMillis() {
+        return (delayMillis != null) ? delayMillis : 0L;
     }
 
-    public void setDelay(Long delay) {
-        this.delay = delay;
+    public void setDelayMillis(Long delayMillis) {
+        this.delayMillis = delayMillis;
     }
 
     @Override

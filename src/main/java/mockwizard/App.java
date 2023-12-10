@@ -1,6 +1,6 @@
 package mockwizard;
 
-import mockwizard.config.MockConfig;
+import mockwizard.config.ContextConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,12 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class App {
 
-    private final MockConfig mockConfig;
+    private final ContextConfig contextConfig;
 
     @Autowired
-    public App(MockConfig mockConfig) {
-        this.mockConfig = mockConfig;
-        this.mockConfig.init();
+    public App(ContextConfig contextConfig) {
+        this.contextConfig = contextConfig;
+        this.contextConfig.init();
     }
 
     public static void main(String[] args) {
