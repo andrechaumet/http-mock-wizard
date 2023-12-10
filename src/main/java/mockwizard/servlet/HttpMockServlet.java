@@ -1,6 +1,7 @@
 package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
+import mockwizard.exception.MockWizardException;
 import mockwizard.model.base.HttpRequest;
 import mockwizard.model.base.HttpResponse;
 import mockwizard.service.MockService;
@@ -14,7 +15,7 @@ import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static mockwizard.servlet.RequestCreator.createRequest;
+import static mockwizard.servlet.RequestExtractor.ExtractRequest;
 
 @Component
 public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
@@ -39,15 +40,17 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
     private void handleAsync(final HttpExchange exchange) {
         try {
             handleResponse(exchange, handleRequest(exchange));
-        } catch (final IOException e) {
+        } catch (final MockWizardException e) {
+            LOGGER.error("Error while handling mock request [{}].", e.getMessage());
+        } catch (final Exception e) {
             LOGGER.error("Generic error while handling mock request [{}].", e.getMessage());
         } finally {
             exchange.close();
         }
     }
 
-    private HttpResponse handleRequest(final HttpExchange exchange) throws IOException {
-        final HttpRequest request = createRequest(exchange);
+    private HttpResponse handleRequest(final HttpExchange exchange) {
+        final HttpRequest request = ExtractRequest(exchange);
         final String method = exchange.getRequestMethod();
         final String uri = exchange.getRequestURI().toString();
         return service.mock(uri, method, request);
