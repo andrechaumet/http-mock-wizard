@@ -14,9 +14,9 @@ import java.net.InetSocketAddress;
 
 @Configuration
 @EnableScheduling
-public class MockConfig {
+public class ContextConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MockConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContextConfig.class);
 
     private static final Integer PORT = 8088;
     private static final Integer DEFAULT_BACKLOG = -1;
@@ -27,7 +27,7 @@ public class MockConfig {
     private final HttpServer server;
 
     @Autowired
-    public MockConfig(HttpMockServlet httpMockServlet) throws IOException {
+    public ContextConfig(HttpMockServlet httpMockServlet) throws IOException {
         this.httpMockServlet = httpMockServlet;
         this.server = HttpServer.create(new InetSocketAddress(PORT), DEFAULT_BACKLOG);
     }

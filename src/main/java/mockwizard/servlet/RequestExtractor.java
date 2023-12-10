@@ -1,6 +1,7 @@
 package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
+import mockwizard.exception.MockWizardException;
 import mockwizard.model.component.Header;
 import mockwizard.model.base.HttpRequest;
 import mockwizard.model.component.Param;
@@ -13,9 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.emptyList;
+import static mockwizard.exception.DetailedException.INVALID_BODY;
 import static mockwizard.model.base.HttpRequest.Builder.builder;
 
-public class RequestCreator {
+public class RequestExtractor {
 
     private static final String PARAMS_START = "?";
     private static final String PARAM_PLUS = "&";
@@ -28,10 +30,10 @@ public class RequestCreator {
     private static final Integer OFFSET = 0;
     private static final Integer NO_MORE_DATA = -1;
 
-    private RequestCreator() {
+    private RequestExtractor() {
     }
 
-    public static HttpRequest createRequest(final HttpExchange exchange) throws IOException {
+    public static HttpRequest ExtractRequest(final HttpExchange exchange) {
         return builder()
                 .withBody(extractBody(exchange.getRequestBody()))
                 .withHeaders(extractHeaders(exchange.getRequestHeaders()))
@@ -67,14 +69,21 @@ public class RequestCreator {
         return part.length == EXPECTED_KEY_VALUE_LENGTH;
     }
 
-    private static String extractBody(final InputStream body) throws IOException {
-        final StringBuilder requestBodyBuilder = new StringBuilder();
-        int bytesRead;
+    private static String extractBody(final InputStream body) {
+        final StringBuilder bodyBuilder = new StringBuilder();
         final byte[] buffer = new byte[BUFFER_SIZE];
-        while ((bytesRead = body.read(buffer)) != NO_MORE_DATA) {
-            requestBodyBuilder.append(new String(buffer, OFFSET, bytesRead));
+        int bytesRead;
+        while ((bytesRead = read(body, buffer)) != NO_MORE_DATA) {
+            bodyBuilder.append(new String(buffer, OFFSET, bytesRead));
         }
-        return requestBodyBuilder.toString();
+        return bodyBuilder.toString();
     }
 
+    private static int read(final InputStream body, final byte[] buffer) {
+        try {
+            return body.read(buffer);
+        } catch (IOException e) {
+            throw new MockWizardException(INVALID_BODY);
+        }
+    }
 }
