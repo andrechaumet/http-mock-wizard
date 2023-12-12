@@ -8,7 +8,7 @@ import mockwizard.model.base.HttpRequest;
 import mockwizard.model.base.HttpResponse;
 import mockwizard.model.component.Header;
 import mockwizard.model.component.Param;
-import mockwizard.repository.MocksRepository;
+import mockwizard.persistence.MocksRepository;
 import mockwizard.service.MockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,6 @@ public class MockServiceImpl implements MockService {
                 .findByUriAndMethod(uri, method)
                 .map(mock -> process(request, mock))
                 .orElseThrow(() -> new MockWizardException(MOCK_NOT_FOUND));
-
     }
 
     private HttpResponse process(HttpRequest sent, ReadOnlyMock found) {

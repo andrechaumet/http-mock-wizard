@@ -22,7 +22,6 @@ public class RequestExtractor {
     private static final String PARAMS_START = "?";
     private static final String PARAM_PLUS = "&";
     private static final String PARAM_VALUE = "=";
-
     private static final Integer KEY_POSITION = 0;
     private static final Integer VALUE_POSITION = 1;
     private static final Integer EXPECTED_KEY_VALUE_LENGTH = 2;
@@ -33,7 +32,7 @@ public class RequestExtractor {
     private RequestExtractor() {
     }
 
-    public static HttpRequest ExtractRequest(final HttpExchange exchange) {
+    public static HttpRequest extractRequest(final HttpExchange exchange) {
         return builder()
                 .withBody(extractBody(exchange.getRequestBody()))
                 .withHeaders(extractHeaders(exchange.getRequestHeaders()))

@@ -1,6 +1,9 @@
 package mockwizard.exception;
 
+import java.time.LocalDateTime;
+
 public enum DetailedException {
+    //TODO:
     BODY_DONT_MATCH("TODO", 4001),
     HEADERS_DONT_MATCH("TODO", 4002),
     PARAMS_DONT_MATCH("TODO", 4003),
@@ -11,8 +14,10 @@ public enum DetailedException {
     DetailedException(String message, int code) {
         this.message = message;
         this.code = code;
+        this.time = LocalDateTime.now();
     }
 
+    private final LocalDateTime time;
     private final String message;
     private final int code;
 
@@ -24,4 +29,7 @@ public enum DetailedException {
         return code;
     }
 
+    public LocalDateTime getTime() {
+        return time;
+    }
 }

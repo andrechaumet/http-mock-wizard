@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class HttpResponse {
-    private String httpStatusCode;
+    private Integer httpStatusCode;
     private List<Header> headers;
     private String body;
 
@@ -23,7 +23,7 @@ public class HttpResponse {
         return responseHeaders;
     }
 
-    public String getHttpStatusCode() {
+    public Integer getHttpStatusCode() {
         return httpStatusCode;
     }
 

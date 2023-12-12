@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static mockwizard.servlet.RequestExtractor.ExtractRequest;
+import static mockwizard.servlet.RequestExtractor.extractRequest;
 
 @Component
 public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
@@ -36,7 +36,6 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
         executorService.submit(() -> handleAsync(exchange));
     }
 
-    //TODO: Store in the mock file how much delay I want the response to return.
     private void handleAsync(final HttpExchange exchange) {
         try {
             handleResponse(exchange, handleRequest(exchange));
@@ -50,7 +49,7 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
     }
 
     private HttpResponse handleRequest(final HttpExchange exchange) {
-        final HttpRequest request = ExtractRequest(exchange);
+        final HttpRequest request = extractRequest(exchange);
         final String method = exchange.getRequestMethod();
         final String uri = exchange.getRequestURI().toString();
         return service.mock(uri, method, request);
@@ -71,7 +70,7 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
 
     private void sendResponseHeaders(HttpExchange exchange, HttpResponse response) throws IOException {
         final int contentLength = response.getBody().getBytes().length;
-        exchange.sendResponseHeaders(Integer.parseInt(response.getHttpStatusCode()), contentLength);
+        exchange.sendResponseHeaders(response.getHttpStatusCode(), contentLength);
     }
 
     private void setResponseHeaders(HttpExchange exchange, HttpResponse response) {
