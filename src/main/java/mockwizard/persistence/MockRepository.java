@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface MocksRepository {
+public interface MockRepository {
     Optional<ReadOnlyMock> findByUriAndMethod(final String uri, final String method);
     Page<ReadOnlyMock> findAll(final Pageable pageable, final Predicate predicate);
     ReadOnlyMock save(final Mock mock);

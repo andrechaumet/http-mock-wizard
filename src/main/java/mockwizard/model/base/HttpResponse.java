@@ -34,4 +34,40 @@ public class HttpResponse {
     public String getBody() {
         return body;
     }
+
+    public static final class Builder {
+        private Integer httpStatusCode;
+        private List<Header> headers;
+        private String body;
+
+        private Builder() {
+        }
+
+        public static Builder aHttpResponse() {
+            return new Builder();
+        }
+
+        public Builder withHttpStatusCode(Integer httpStatusCode) {
+            this.httpStatusCode = httpStatusCode;
+            return this;
+        }
+
+        public Builder withHeaders(List<Header> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        public Builder withBody(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public HttpResponse build() {
+            HttpResponse httpResponse = new HttpResponse();
+            httpResponse.body = this.body;
+            httpResponse.headers = this.headers;
+            httpResponse.httpStatusCode = this.httpStatusCode;
+            return httpResponse;
+        }
+    }
 }

@@ -8,7 +8,7 @@ import mockwizard.model.base.HttpRequest;
 import mockwizard.model.base.HttpResponse;
 import mockwizard.model.component.Header;
 import mockwizard.model.component.Param;
-import mockwizard.persistence.MocksRepository;
+import mockwizard.persistence.MockRepository;
 import mockwizard.service.MockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +22,11 @@ import static mockwizard.exception.DetailedException.*;
 public class MockServiceImpl implements MockService {
 
     private final JsonParser parser;
-    private final MocksRepository repository;
+    private final MockRepository repository;
 
     @Autowired
-    public MockServiceImpl(MocksRepository mocksRepository) {
-        this.repository = mocksRepository;
+    public MockServiceImpl(MockRepository mockRepository) {
+        this.repository = mockRepository;
         this.parser = new JsonParser();
     }
 
