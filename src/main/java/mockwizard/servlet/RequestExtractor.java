@@ -15,7 +15,6 @@ import java.util.Map;
 
 import static java.util.Collections.emptyList;
 import static mockwizard.exception.DetailedException.INVALID_BODY;
-import static mockwizard.model.base.HttpRequest.Builder.builder;
 
 public class RequestExtractor {
 
@@ -33,7 +32,7 @@ public class RequestExtractor {
     }
 
     public static HttpRequest extractRequest(final HttpExchange exchange) {
-        return builder()
+        return HttpRequest.Builder.builder()
                 .withBody(extractBody(exchange.getRequestBody()))
                 .withHeaders(extractHeaders(exchange.getRequestHeaders()))
                 .withParams(extractParams(exchange.getRequestURI()))
