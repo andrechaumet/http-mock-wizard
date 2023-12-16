@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static mockwizard.servlet.RequestExtractor.extractRequest;
+import static mockwizard.servlet.extractor.RequestExtractor.extractRequest;
 
 @Component
 public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
