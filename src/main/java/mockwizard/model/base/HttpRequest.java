@@ -15,7 +15,6 @@ public class HttpRequest {
         return params;
     }
 
-
     public List<Header> getHeaders() {
         return headers;
     }
@@ -64,44 +63,4 @@ public class HttpRequest {
             return httpRequest;
         }
     }
-
-
-
-/*    public static final class Builder {
-        private List<Header> headers;
-        private List<Param> params;
-        private Body body;
-
-        public static Builder builder() {
-            return new Builder();
-        }
-
-        public Builder withHeaders(List<Header> headers) {
-            this.headers = headers;
-            return this;
-        }
-
-        public Builder withParams(List<Param> params) {
-            this.params = params;
-            return this;
-        }
-
-        public Builder withBody(Body body) {
-            this.body = body;
-            return this;
-        }
-
-        public Builder withBody(String value) {
-            this.body = new Body(value);
-            return this;
-        }
-
-        public HttpRequest build() {
-            HttpRequest httpRequest = new HttpRequest();
-            httpRequest.headers(headers);
-            httpRequest.params(params);
-            httpRequest.body(body);
-            return httpRequest;
-        }
-    }*/
 }

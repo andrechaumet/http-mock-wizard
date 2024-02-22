@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import static java.lang.Thread.sleep;
 import static mockwizard.exception.DetailedException.*;
 
 @Component
@@ -68,8 +68,9 @@ public class MockServiceImpl implements MockService {
 
     private void delay(ReadOnlyMock mock) {
         try {
-            sleep(mock.getDelayMillis());
+            TimeUnit.MILLISECONDS.sleep(mock.getDelayMillis());
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new MockWizardException(UNEXPECTED_ERROR);
         }
     }
