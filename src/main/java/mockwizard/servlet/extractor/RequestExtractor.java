@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.emptyList;
-import static mockwizard.exception.DetailedException.INVALID_BODY;
+import static mockwizard.exception.DetailedException.INVALID_REQUEST_BODY;
 import static mockwizard.model.base.HttpRequest.Builder.builder;
 
 public class RequestExtractor {
@@ -82,7 +82,7 @@ public class RequestExtractor {
         try {
             return body.read(buffer);
         } catch (IOException e) {
-            throw new MockWizardException(INVALID_BODY);
+            throw new MockWizardException(INVALID_REQUEST_BODY);
         }
     }
 }

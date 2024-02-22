@@ -3,13 +3,12 @@ package mockwizard.exception;
 import java.time.LocalDateTime;
 
 public enum DetailedException {
-    //TODO:
-    BODY_DONT_MATCH("TODO", 4001),
-    HEADERS_DONT_MATCH("TODO", 4002),
-    PARAMS_DONT_MATCH("TODO", 4003),
-    MOCK_NOT_FOUND("TODO", 4004),
-    INVALID_BODY("TODO", 4005),
-    GENERIC_ERROR("TODO", 5000);
+    REQUEST_BODY_MISMATCH("Request body does not match the expected format", 4001),
+    REQUEST_HEADERS_MISMATCH("Request headers do not match the expected format", 4002),
+    REQUEST_PARAMS_MISMATCH("Request parameters do not match the expected format", 4003),
+    MOCK_NOT_FOUND("Mock data not found for the request", 4004),
+    INVALID_REQUEST_BODY("Invalid request body format", 4005),
+    UNEXPECTED_ERROR("An unexpected error occurred", 5000);
 
     DetailedException(String message, int code) {
         this.message = message;

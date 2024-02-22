@@ -70,19 +70,19 @@ public class MockServiceImpl implements MockService {
         try {
             sleep(mock.getDelayMillis());
         } catch (InterruptedException e) {
-            throw new MockWizardException(GENERIC_ERROR);
+            throw new MockWizardException(UNEXPECTED_ERROR);
         }
     }
 
     private void failIfValuesDontMatch(final HttpRequest sent, final HttpRequest found) {
         if (!validHeaders(sent, found)) {
-            throw new MockWizardException(HEADERS_DONT_MATCH);
+            throw new MockWizardException(REQUEST_HEADERS_MISMATCH);
         }
         if (!validBody(sent, found)) {
-            throw new MockWizardException(BODY_DONT_MATCH);
+            throw new MockWizardException(REQUEST_BODY_MISMATCH);
         }
         if (!validParams(sent, found)) {
-            throw new MockWizardException(PARAMS_DONT_MATCH);
+            throw new MockWizardException(REQUEST_PARAMS_MISMATCH);
         }
     }
 }
