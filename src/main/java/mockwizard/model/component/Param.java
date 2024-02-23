@@ -3,11 +3,12 @@ package mockwizard.model.component;
 public class Param {
     private final String key;
     private final String value;
-    private Boolean required;
+    private final Boolean required;
 
     public Param(String key, String value) {
         this.key = key;
         this.value = value;
+        this.required = false;
     }
 
     public Param(String key, String value, Boolean required) {
@@ -27,5 +28,4 @@ public class Param {
     public String getValue() {
         return value;
     }
-
 }

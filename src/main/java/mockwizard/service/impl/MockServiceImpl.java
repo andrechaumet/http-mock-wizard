@@ -25,7 +25,7 @@ public class MockServiceImpl implements MockService {
     private final MockRepository repository;
 
     @Autowired
-    public MockServiceImpl(MockRepository mockRepository) {
+    public MockServiceImpl(final MockRepository mockRepository) {
         this.repository = mockRepository;
         this.parser = new JsonParser();
     }
@@ -37,7 +37,7 @@ public class MockServiceImpl implements MockService {
                 .orElseThrow(() -> new MockWizardException(MOCK_NOT_FOUND));
     }
 
-    private HttpResponse process(HttpRequest sent, ReadOnlyMock found) {
+    private HttpResponse process(final HttpRequest sent, final ReadOnlyMock found) {
         failIfValuesDontMatch(sent, found.getKey());
         delay(found);
         return found.getValue();
@@ -66,7 +66,7 @@ public class MockServiceImpl implements MockService {
                 .allMatch(param -> sent.getParams().contains(param));
     }
 
-    private void delay(ReadOnlyMock mock) {
+    private void delay(final ReadOnlyMock mock) {
         try {
             TimeUnit.MILLISECONDS.sleep(mock.getDelayMillis());
         } catch (InterruptedException e) {

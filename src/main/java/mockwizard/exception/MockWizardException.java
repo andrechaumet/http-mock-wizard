@@ -22,5 +22,4 @@ public class MockWizardException extends RuntimeException {
     public String getMessage() {
         return message;
     }
-
 }

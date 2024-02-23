@@ -1,9 +1,11 @@
 package mockwizard.servlet;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import mockwizard.exception.MockWizardException;
 import mockwizard.model.base.HttpRequest;
 import mockwizard.model.base.HttpResponse;
+import mockwizard.model.component.Header;
 import mockwizard.service.MockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,7 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
     private final ExecutorService executorService;
 
     @Autowired
-    public HttpMockServlet(MockService mockService) {
+    public HttpMockServlet(final MockService mockService) {
         this.service = mockService;
         this.executorService = Executors.newFixedThreadPool(POOL_SIZE);
     }
@@ -40,7 +42,7 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
         try {
             handleResponse(exchange, handleRequest(exchange));
         } catch (final MockWizardException e) {
-            LOGGER.error("Error while handling mock request [{}].", e.getMessage());
+            LOGGER.error("Error [{}] while handling mock request [{}].", e.getCode(), e.getMessage());
         } catch (final Exception e) {
             LOGGER.error("Generic error while handling mock request [{}].", e.getMessage());
         } finally {
@@ -61,19 +63,24 @@ public class HttpMockServlet implements com.sun.net.httpserver.HttpHandler {
         sendResponseHeaders(exchange, response);
     }
 
-    private void writeResponseBody(HttpExchange exchange, HttpResponse response) throws IOException {
+    private void writeResponseBody(final HttpExchange exchange, final HttpResponse response) throws IOException {
         final String responseBody = response.getBody();
         try (final OutputStream output = exchange.getResponseBody()) {
             output.write(responseBody.getBytes());
         }
     }
 
-    private void sendResponseHeaders(HttpExchange exchange, HttpResponse response) throws IOException {
+    private void sendResponseHeaders(final HttpExchange exchange, final HttpResponse response) throws IOException {
         final int contentLength = response.getBody().getBytes().length;
+        response.getHeaders().forEach(header -> writeHeader(exchange.getResponseHeaders(), header));
         exchange.sendResponseHeaders(response.getHttpStatusCode(), contentLength);
     }
 
-    private void setResponseHeaders(HttpExchange exchange, HttpResponse response) {
+    private void writeHeader(final Headers headers, final Header header) {
+        headers.add(header.getKey(), header.getJoinedValue());
+    }
+
+    private void setResponseHeaders(final HttpExchange exchange, final HttpResponse response) {
         exchange.getResponseHeaders().putAll(response.getHeadersAsResponse());
     }
 }

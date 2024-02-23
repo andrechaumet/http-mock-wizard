@@ -45,11 +45,6 @@ public class HttpRequest {
             return this;
         }
 
-        public Builder withBody(Body body) {
-            this.body = body;
-            return this;
-        }
-
         public Builder withBody(String value) {
             this.body = new Body(value);
             return this;
