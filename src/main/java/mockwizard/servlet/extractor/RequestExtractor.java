@@ -64,7 +64,7 @@ public class RequestExtractor {
         return params;
     }
 
-    private static boolean containsValue(String[] part) {
+    private static boolean containsValue(final String[] part) {
         return part.length == EXPECTED_KEY_VALUE_LENGTH;
     }
 

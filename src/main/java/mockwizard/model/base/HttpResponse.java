@@ -12,7 +12,7 @@ public class HttpResponse {
     private String body;
 
     public Map<String, List<String>> getHeadersAsResponse() {
-        Map<String, List<String>> responseHeaders = new HashMap<>();
+        final Map<String, List<String>> responseHeaders = new HashMap<>();
         for (Header header : headers) {
             String key = header.getKey();
             List<String> values = header.getValues();
