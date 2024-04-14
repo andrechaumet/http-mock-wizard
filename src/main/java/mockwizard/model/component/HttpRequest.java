@@ -8,7 +8,6 @@ public record HttpRequest(
         @NotNull Set<Attribute<?>> params,
         @NotNull Set<Attribute<?>> body
 ) {
-
     @Override
     public Set<Attribute<?>> params() {
         return Set.copyOf(params);

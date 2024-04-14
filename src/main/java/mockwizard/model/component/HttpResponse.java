@@ -10,7 +10,6 @@ public record HttpResponse(
         @NotNull Set<Attribute<?>> headers,
         @NotNull Set<Attribute<?>> body
 ) {
-
     @Override
     public Set<Attribute<?>> headers() {
         return Set.copyOf(headers);
