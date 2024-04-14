@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
-import static mockwizard.servlet.extractor.RequestExtractor.extractRequest;
+import static mockwizard.servlet.RequestExtractor.extractRequest;
 
 @Component
 public class HttpMockServlet implements HttpHandler {
@@ -102,5 +102,4 @@ public class HttpMockServlet implements HttpHandler {
         }
         return responseHeaders;
     }
-
 }

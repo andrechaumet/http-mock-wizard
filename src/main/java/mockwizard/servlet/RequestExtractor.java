@@ -1,4 +1,4 @@
-package mockwizard.servlet.extractor;
+package mockwizard.servlet;
 
 import com.sun.net.httpserver.HttpExchange;
 import mockwizard.exception.MockWizardException;
@@ -21,9 +21,8 @@ public class RequestExtractor {
     private static final String PARAMS_START = "?";
     private static final String PARAM_PLUS = "&";
     private static final String PARAM_VALUE = "=";
-
-
     private static final String ATTRIBUTE_DELIMITER = ":";
+
     private static final Integer KEY_POSITION = 0;
     private static final Integer VALUE_POSITION = 1;
 
