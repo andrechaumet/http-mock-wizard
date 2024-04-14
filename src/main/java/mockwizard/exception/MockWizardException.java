@@ -1,5 +1,8 @@
 package mockwizard.exception;
 
+import lombok.Getter;
+
+@Getter
 public class MockWizardException extends RuntimeException {
     private final int code;
     private final String message;
@@ -12,10 +15,6 @@ public class MockWizardException extends RuntimeException {
     @Override
     public synchronized Throwable fillInStackTrace() {
         return this;
-    }
-
-    public int getCode() {
-        return code;
     }
 
     @Override

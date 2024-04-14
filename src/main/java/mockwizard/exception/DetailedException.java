@@ -1,7 +1,10 @@
 package mockwizard.exception;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public enum DetailedException {
     REQUEST_BODY_MISMATCH("Request body does not match the expected format.", 4001),
     REQUEST_HEADERS_MISMATCH("Request headers do not match the expected format.", 4002),
@@ -20,15 +23,4 @@ public enum DetailedException {
     private final String message;
     private final int code;
 
-    public String getMessage() {
-        return message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public LocalDateTime getTime() {
-        return time;
-    }
 }

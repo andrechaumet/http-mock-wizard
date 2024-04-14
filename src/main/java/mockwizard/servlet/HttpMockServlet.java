@@ -7,7 +7,7 @@ import mockwizard.exception.MockWizardException;
 import mockwizard.model.Attribute;
 import mockwizard.model.HttpRequest;
 import mockwizard.model.HttpResponse;
-import mockwizard.service.MockService;
+import mockwizard.service.MockProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +30,12 @@ public class HttpMockServlet implements HttpHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockServlet.class);
     private static final Integer POOL_SIZE = 20;
-    private final MockService service;
+    private final MockProvider mocker;
     private final ExecutorService executorService;
 
     @Autowired
-    public HttpMockServlet(final MockService mockService) {
-        this.service = mockService;
+    public HttpMockServlet(final MockProvider mocker) {
+        this.mocker = mocker;
         this.executorService = newFixedThreadPool(POOL_SIZE);
     }
 
@@ -59,7 +59,7 @@ public class HttpMockServlet implements HttpHandler {
         final HttpRequest request = extractRequest(exchange);
         final String method = exchange.getRequestMethod();
         final String uri = exchange.getRequestURI().toString();
-        return service.mock(uri, method, request);
+        return mocker.mock(uri, method, request);
     }
 
     private void handleResponse(final HttpExchange exchange, final HttpResponse response) throws IOException {
@@ -71,7 +71,7 @@ public class HttpMockServlet implements HttpHandler {
     private void writeResponseBody(final HttpExchange exchange, final HttpResponse response) throws IOException {
         final String responseBody =
                 response.body().stream()
-                        .map(Record::toString)
+                        .map(Attribute::valueAsString)
                         .collect(Collectors.joining());
         try (final OutputStream output = exchange.getResponseBody()) {
             output.write(responseBody.getBytes());
@@ -81,15 +81,16 @@ public class HttpMockServlet implements HttpHandler {
     private void sendResponseHeaders(final HttpExchange exchange, final HttpResponse response) throws IOException {
         final int contentLength =
                 response.body().stream()
-                        .map(Record::toString)
+                        .map(Attribute::valueAsString)
                         .collect(Collectors.joining())
-                        .getBytes().length;
+                        .getBytes()
+                        .length;
         response.headers().forEach(header -> writeHeader(exchange.getResponseHeaders(), header));
         exchange.sendResponseHeaders(response.httpStatus().value(), contentLength);
     }
 
     private void writeHeader(final Headers headers, final Attribute<?> header) {
-        headers.add(header.key(), header.value().toString());
+        headers.add(header.key(), header.valueAsString());
     }
 
     private void writeResponseHeaders(final HttpExchange exchange, final HttpResponse response) {
@@ -99,7 +100,7 @@ public class HttpMockServlet implements HttpHandler {
     private Map<String, List<String>> writeHeadersAsResponse(final Set<Attribute<?>> headers) {
         Map<String, List<String>> responseHeaders = new HashMap<>(headers.size());
         for (Attribute<?> header : headers) {
-            responseHeaders.put(header.key(), (List<String>) List.of(header.value()));
+            responseHeaders.put(header.key(), List.of(header.valueAsString()));
         }
         return responseHeaders;
     }

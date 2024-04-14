@@ -15,7 +15,6 @@ import java.net.InetSocketAddress;
 @Configuration
 @EnableScheduling
 public class ContextConfig {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ContextConfig.class);
 
     private static final Integer PORT = 8088;

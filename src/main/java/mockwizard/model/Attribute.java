@@ -33,6 +33,10 @@ public record Attribute<T>(
         return Optional.ofNullable(value);
     }
 
+    public String valueAsString() {
+        return (value != null) ? value.toString() : "";
+    }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

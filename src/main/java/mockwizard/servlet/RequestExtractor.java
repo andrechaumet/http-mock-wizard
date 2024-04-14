@@ -30,8 +30,7 @@ public class RequestExtractor {
     private static final Integer OFFSET = 0;
     private static final Integer NO_MORE_DATA = -1;
 
-    private RequestExtractor() {
-    }
+    private RequestExtractor() {}
 
     public static HttpRequest extractRequest(final HttpExchange exchange) {
         return new HttpRequest(
