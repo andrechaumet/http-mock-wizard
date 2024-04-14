@@ -1,4 +1,4 @@
-package mockwizard.model.component;
+package mockwizard.model;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;

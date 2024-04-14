@@ -4,9 +4,9 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import mockwizard.exception.MockWizardException;
-import mockwizard.model.component.Attribute;
-import mockwizard.model.component.HttpRequest;
-import mockwizard.model.component.HttpResponse;
+import mockwizard.model.Attribute;
+import mockwizard.model.HttpRequest;
+import mockwizard.model.HttpResponse;
 import mockwizard.service.MockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +41,7 @@ public class HttpMockServlet implements HttpHandler {
 
     @Override
     public void handle(final HttpExchange exchange) {
+        LOGGER.info("Received mock request [{}].", exchange);
         executorService.submit(() -> handleAsync(exchange));
     }
 

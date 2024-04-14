@@ -1,5 +1,6 @@
-package mockwizard.model.component;
+package mockwizard.model;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import java.util.function.BiPredicate;
 
 public record Attribute<T>(
         @NotBlank String key,
-        T value,
+        @Nullable T value,
         @NotNull Boolean required,
         @NotNull BiPredicate<T, T> expectedBehaviour
 ) {

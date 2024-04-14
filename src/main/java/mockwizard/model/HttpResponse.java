@@ -1,4 +1,4 @@
-package mockwizard.model.component;
+package mockwizard.model;
 
 import org.springframework.http.HttpStatus;
 
