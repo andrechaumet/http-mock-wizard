@@ -2,29 +2,31 @@ package mockwizard.servlet.extractor;
 
 import com.sun.net.httpserver.HttpExchange;
 import mockwizard.exception.MockWizardException;
-import mockwizard.model.component.Header;
-import mockwizard.model.base.HttpRequest;
-import mockwizard.model.component.Param;
+import mockwizard.model.component.Attribute;
+import mockwizard.model.component.HttpRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static mockwizard.exception.DetailedException.INVALID_REQUEST_BODY;
-import static mockwizard.model.base.HttpRequest.Builder.builder;
 
 public class RequestExtractor {
 
     private static final String PARAMS_START = "?";
     private static final String PARAM_PLUS = "&";
     private static final String PARAM_VALUE = "=";
+
+
+    private static final String ATTRIBUTE_DELIMITER = ":";
     private static final Integer KEY_POSITION = 0;
     private static final Integer VALUE_POSITION = 1;
-    private static final Integer EXPECTED_KEY_VALUE_LENGTH = 2;
+
     private static final Integer BUFFER_SIZE = 1024;
     private static final Integer OFFSET = 0;
     private static final Integer NO_MORE_DATA = -1;
@@ -33,56 +35,71 @@ public class RequestExtractor {
     }
 
     public static HttpRequest extractRequest(final HttpExchange exchange) {
-        return builder()
-                .withBody(extractBody(exchange.getRequestBody()))
-                .withHeaders(extractHeaders(exchange.getRequestHeaders()))
-                .withParams(extractParams(exchange.getRequestURI()))
-                .build();
+        return new HttpRequest(
+                extractHeaders(exchange.getRequestHeaders()),
+                extractParams(exchange.getRequestURI()),
+                extractBody(exchange.getRequestBody())
+        );
     }
 
-    private static List<Header> extractHeaders(final Map<String, List<String>> headers) {
-        final List<Header> headersFormatted = new LinkedList<>();
+    private static Set<Attribute<?>> extractHeaders(final Map<String, List<String>> headers) {
+        final Set<Attribute<?>> headersFormatted = new HashSet<>();
         for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            headersFormatted.add(new Header(entry.getKey(), entry.getValue()));
+            headersFormatted.add(new Attribute<>(entry.getKey(), entry.getValue()));
         }
         return headersFormatted;
     }
 
-    private static List<Param> extractParams(final URI uri) {
+    private static Set<Attribute<?>> extractParams(final URI uri) {
         final String path = uri.toString();
-        return (path.contains(PARAMS_START)) ? pathToParams(path) : emptyList();
+        return (path.contains(PARAMS_START)) ? pathToParams(path) : emptySet();
     }
 
-    private static List<Param> pathToParams(final String path) {
-        final List<Param> params = new LinkedList<>();
+    private static Set<Attribute<?>> pathToParams(final String path) {
+        final Set<Attribute<?>> params = new HashSet<>();
         for (String pair : path.split(PARAM_PLUS)) {
             final String[] parts = pair.split(PARAM_VALUE);
-            if (containsValue(parts)) {
-                params.add(new Param(parts[KEY_POSITION], parts[VALUE_POSITION]));
-            }
+            params.add(new Attribute<>(parts[KEY_POSITION], parts[VALUE_POSITION]));
         }
         return params;
     }
 
-    private static boolean containsValue(final String[] part) {
-        return part.length == EXPECTED_KEY_VALUE_LENGTH;
+    private static Set<Attribute<?>> extractBody(final InputStream input) {
+        try {
+            return createBody(getJson(input));
+        } catch (Exception e) {
+            throw new MockWizardException(INVALID_REQUEST_BODY);
+        }
     }
 
-    private static String extractBody(final InputStream body) {
+    private static String getJson(final InputStream body) throws IOException {
         final StringBuilder bodyBuilder = new StringBuilder();
         final byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead;
-        while ((bytesRead = read(body, buffer)) != NO_MORE_DATA) {
+        while ((bytesRead = body.read(buffer)) != NO_MORE_DATA) {
             bodyBuilder.append(new String(buffer, OFFSET, bytesRead));
         }
         return bodyBuilder.toString();
     }
 
-    private static int read(final InputStream body, final byte[] buffer) {
-        try {
-            return body.read(buffer);
-        } catch (IOException e) {
-            throw new MockWizardException(INVALID_REQUEST_BODY);
+    private static Set<Attribute<?>> createBody(String jsonBytes) {
+        Set<Attribute<?>> attributes = new HashSet<>();
+        String[] keyValuePairs = cleanKeyValuePairs(jsonBytes);
+        for (String pair : keyValuePairs) {
+            String[] entry = pair.split(ATTRIBUTE_DELIMITER);
+            attributes.add(new Attribute<>(cleanEntry(entry[KEY_POSITION]), cleanEntry(entry[VALUE_POSITION])));
         }
+        return attributes;
+    }
+
+    private static String[] cleanKeyValuePairs(String json) {
+        return json.trim()
+                .replace("{", "")
+                .replace("}", "")
+                .split(",");
+    }
+
+    private static String cleanEntry(String pair) {
+        return pair.trim().replace("\"", "");
     }
 }

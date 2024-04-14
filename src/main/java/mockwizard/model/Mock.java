@@ -1,57 +1,52 @@
 package mockwizard.model;
 
-import mockwizard.model.base.HttpRequest;
-import mockwizard.model.base.HttpResponse;
+import mockwizard.model.component.HttpRequest;
+import mockwizard.model.component.HttpResponse;
+import org.springframework.http.HttpMethod;
 
-public class Mock implements ReadOnlyMock {
-    private String path;
-    private String method;
-    private Long delayMillis;
-    private HttpRequest key;
-    private HttpResponse value;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-    @Override
+public class Mock {
+    private final String path;
+    private final HttpMethod method;
+    private final HttpRequest key;
+    private final HttpResponse value;
+    private final Long delayMillis;
+
+    public Mock(@NotBlank String path, @NotNull HttpMethod method, @NotNull HttpRequest key, @NotNull HttpResponse value) {
+        this.key = key;
+        this.path = path;
+        this.value = value;
+        this.method = method;
+        this.delayMillis = 0L;
+    }
+
+    public Mock(@NotBlank String path, @NotNull HttpMethod method, @NotNull HttpRequest key, @NotNull HttpResponse value, Long delayMillis) {
+        this.key = key;
+        this.path = path;
+        this.value = value;
+        this.method = method;
+        this.delayMillis = delayMillis;
+    }
+
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    @Override
-    public String getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    @Override
     public Long getDelayMillis() {
-        return (delayMillis != null) ? delayMillis : 0L;
+        return delayMillis;
     }
 
-    public void setDelayMillis(Long delayMillis) {
-        this.delayMillis = delayMillis;
-    }
-
-    @Override
     public HttpRequest getKey() {
         return key;
     }
 
-    public void setKey(HttpRequest key) {
-        this.key = key;
-    }
-
-    @Override
     public HttpResponse getValue() {
         return value;
-    }
-
-    public void setValue(HttpResponse value) {
-        this.value = value;
     }
 }

@@ -3,7 +3,6 @@ package mockwizard.exception;
 import java.time.LocalDateTime;
 
 public enum DetailedException {
-
     REQUEST_BODY_MISMATCH("Request body does not match the expected format", 4001),
     REQUEST_HEADERS_MISMATCH("Request headers do not match the expected format", 4002),
     REQUEST_PARAMS_MISMATCH("Request parameters do not match the expected format", 4003),
