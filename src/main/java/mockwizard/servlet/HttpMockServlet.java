@@ -99,9 +99,7 @@ public class HttpMockServlet implements HttpHandler {
 
     private Map<String, List<String>> writeHeadersAsResponse(final Set<Attribute<?>> headers) {
         Map<String, List<String>> responseHeaders = new HashMap<>(headers.size());
-        for (Attribute<?> header : headers) {
-            responseHeaders.put(header.key(), List.of(header.valueAsString()));
-        }
+        headers.forEach(header -> responseHeaders.put(header.key(), List.of(header.valueAsString())));
         return responseHeaders;
     }
 }
