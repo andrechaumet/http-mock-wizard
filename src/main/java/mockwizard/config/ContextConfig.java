@@ -26,7 +26,7 @@ public class ContextConfig {
     private final HttpServer server;
 
     @Autowired
-    public ContextConfig(HttpMockServlet httpMockServlet) throws IOException {
+    public ContextConfig(final HttpMockServlet httpMockServlet) throws IOException {
         this.httpMockServlet = httpMockServlet;
         this.server = HttpServer.create(new InetSocketAddress(PORT), DEFAULT_BACKLOG);
     }

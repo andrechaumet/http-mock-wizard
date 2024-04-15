@@ -13,19 +13,19 @@ public record Attribute<T>(
         @NotNull Boolean required,
         @NotNull BiPredicate<T, T> expectedBehaviour
 ) {
-    public Attribute(String key, T value) {
+    public Attribute(final String key, final T value) {
         this(key, value, false, (a, b) -> true);
     }
 
-    public Attribute(String key, T value, Boolean required) {
+    public Attribute(final String key, T value, final Boolean required) {
         this(key, value, required, (a, b) -> true);
     }
 
-    public Attribute(String key, T value, BiPredicate<T, T> expectedBehaviour) {
+    public Attribute(final String key, final T value, final BiPredicate<T, T> expectedBehaviour) {
         this(key, value, true, expectedBehaviour);
     }
 
-    public boolean matchesBehaviour(Attribute<?> sent) {
+    public boolean matchesBehaviour(final Attribute<?> sent) {
         return expectedBehaviour.test(this.value, (T) sent.value);
     }
 
@@ -37,10 +37,10 @@ public record Attribute<T>(
         return (value != null) ? value.toString() : "";
     }
 
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Attribute<?> attribute = (Attribute<?>) o;
+        final Attribute<?> attribute = (Attribute<?>) o;
         return Objects.equals(key, attribute.key);
     }
 

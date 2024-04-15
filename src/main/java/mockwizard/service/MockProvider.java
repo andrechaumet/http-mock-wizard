@@ -37,7 +37,7 @@ public class MockProvider {
         return found.value();
     }
 
-    private boolean validateAttributes(Set<Attribute<?>> sentAttr, Set<Attribute<?>> foundAttr) {
+    private boolean validateAttributes(final Set<Attribute<?>> sentAttr, final Set<Attribute<?>> foundAttr) {
         return foundAttr.stream()
                 .filter(Attribute::required)
                 .allMatch(required -> sentAttr.stream()

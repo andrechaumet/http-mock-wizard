@@ -80,24 +80,23 @@ public class RequestExtractor {
         return bodyBuilder.toString();
     }
 
-    private static Set<Attribute<?>> createBody(String jsonBytes) {
-        Set<Attribute<?>> attributes = new HashSet<>();
-        String[] keyValuePairs = cleanKeyValuePairs(jsonBytes);
-        for (String pair : keyValuePairs) {
+    private static Set<Attribute<?>> createBody(final String jsonBytes) {
+        final Set<Attribute<?>> attributes = new HashSet<>();
+        for (String pair : cleanKeyValuePairs(jsonBytes)) {
             String[] entry = pair.split(ATTRIBUTE_DELIMITER);
             attributes.add(new Attribute<>(cleanEntry(entry[KEY_POSITION]), cleanEntry(entry[VALUE_POSITION])));
         }
         return attributes;
     }
 
-    private static String[] cleanKeyValuePairs(String json) {
+    private static String[] cleanKeyValuePairs(final String json) {
         return json.trim()
                 .replace("{", "")
                 .replace("}", "")
                 .split(",");
     }
 
-    private static String cleanEntry(String pair) {
+    private static String cleanEntry(final String pair) {
         return pair.trim().replace("\"", "");
     }
 }
