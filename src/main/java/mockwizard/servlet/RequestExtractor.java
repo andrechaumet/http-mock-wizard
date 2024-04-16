@@ -84,7 +84,9 @@ public class RequestExtractor {
         final Set<Attribute<?>> attributes = new HashSet<>();
         for (String pair : cleanKeyValuePairs(jsonBytes)) {
             String[] entry = pair.split(ATTRIBUTE_DELIMITER);
-            attributes.add(new Attribute<>(cleanEntry(entry[KEY_POSITION]), cleanEntry(entry[VALUE_POSITION])));
+            String key = cleanEntry(entry[KEY_POSITION]);
+            String value = cleanEntry(entry[VALUE_POSITION]);
+            attributes.add(new Attribute<>(key, value));
         }
         return attributes;
     }

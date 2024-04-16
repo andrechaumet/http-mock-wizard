@@ -22,26 +22,24 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
-import static java.util.concurrent.Executors.newFixedThreadPool;
 import static mockwizard.servlet.RequestExtractor.extractRequest;
 
 @Component
 public class HttpMockServlet implements HttpHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpMockServlet.class);
-    private static final Integer POOL_SIZE = 20;
-    private final MockProvider mocker;
     private final ExecutorService executorService;
+    private final MockProvider mockProvider;
 
     @Autowired
-    public HttpMockServlet(final MockProvider mocker) {
-        this.mocker = mocker;
-        this.executorService = newFixedThreadPool(POOL_SIZE);
+    public HttpMockServlet(final MockProvider mockProvider, final ExecutorService executorService) {
+        this.mockProvider = mockProvider;
+        this.executorService = executorService;
     }
 
     @Override
     public void handle(final HttpExchange exchange) {
-        LOGGER.info("Received mock request [{}].", exchange);
+        LOGGER.info("Mocking method [{}] with URI [{}]", exchange.getRequestMethod(), exchange.getRequestURI());
         executorService.submit(() -> handleAsync(exchange));
     }
 
@@ -59,7 +57,7 @@ public class HttpMockServlet implements HttpHandler {
         final HttpRequest request = extractRequest(exchange);
         final String method = exchange.getRequestMethod();
         final String uri = exchange.getRequestURI().toString();
-        return mocker.mock(uri, method, request);
+        return mockProvider.mock(uri, method, request);
     }
 
     private void handleResponse(final HttpExchange exchange, final HttpResponse response) throws IOException {
