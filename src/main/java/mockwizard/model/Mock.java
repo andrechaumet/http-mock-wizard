@@ -11,9 +11,4 @@ public record Mock(
         @NotNull HttpRequest key,
         @NotNull HttpResponse value,
         @NotNull Long delayMillis
-) {
-    @Override
-    public Long delayMillis() {
-        return (delayMillis != null) ? delayMillis : 0L;
-    }
-}
+) {}

@@ -17,7 +17,7 @@ public record Attribute<T>(
         this(key, value, false, (a, b) -> true);
     }
 
-    public Attribute(final String key, T value, final Boolean required) {
+    public Attribute(final String key, final T value, final Boolean required) {
         this(key, value, required, (a, b) -> true);
     }
 

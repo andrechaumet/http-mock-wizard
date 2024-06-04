@@ -37,7 +37,7 @@ public class MockProvider {
         return found.value();
     }
 
-    private boolean validateAttributes(final Set<Attribute<?>> sentAttr, final Set<Attribute<?>> foundAttr) {
+    private boolean validAttributes(final Set<Attribute<?>> sentAttr, final Set<Attribute<?>> foundAttr) {
         return foundAttr.stream()
                 .filter(Attribute::required)
                 .allMatch(required -> sentAttr.stream()
@@ -55,13 +55,13 @@ public class MockProvider {
     }
 
     private void failIfValuesDontMatch(final HttpRequest sent, final HttpRequest found) {
-        if (!validateAttributes(sent.headers(), found.headers())) {
+        if (!validAttributes(sent.headers(), found.headers())) {
             throw new MockWizardException(REQUEST_HEADERS_MISMATCH);
         }
-        if (validateAttributes(sent.body(), found.body())) {
+        if (validAttributes(sent.body(), found.body())) {
             throw new MockWizardException(REQUEST_BODY_MISMATCH);
         }
-        if (validateAttributes(sent.params(), found.params())) {
+        if (validAttributes(sent.params(), found.params())) {
             throw new MockWizardException(REQUEST_PARAMS_MISMATCH);
         }
     }

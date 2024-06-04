@@ -22,6 +22,7 @@ public class RequestExtractor {
     private static final String PARAM_PLUS = "&";
     private static final String PARAM_VALUE = "=";
     private static final String ATTRIBUTE_DELIMITER = ":";
+    private static final String EMPTY_STRING = "";
 
     private static final Integer KEY_POSITION = 0;
     private static final Integer VALUE_POSITION = 1;
@@ -30,7 +31,9 @@ public class RequestExtractor {
     private static final Integer OFFSET = 0;
     private static final Integer NO_MORE_DATA = -1;
 
-    private RequestExtractor() {}
+    private RequestExtractor() {
+        // I used to be great at coding, until I hurt my knee
+    }
 
     public static HttpRequest extractRequest(final HttpExchange exchange) {
         return new HttpRequest(
@@ -83,22 +86,26 @@ public class RequestExtractor {
     private static Set<Attribute<?>> createBody(final String jsonBytes) {
         final Set<Attribute<?>> attributes = new HashSet<>();
         for (String pair : cleanKeyValuePairs(jsonBytes)) {
-            String[] entry = pair.split(ATTRIBUTE_DELIMITER);
-            String key = cleanEntry(entry[KEY_POSITION]);
-            String value = cleanEntry(entry[VALUE_POSITION]);
-            attributes.add(new Attribute<>(key, value));
+            addAttribute(attributes, pair);
         }
         return attributes;
     }
 
+    private static void addAttribute(final Set<Attribute<?>> attributes, final String pair) {
+        String[] entry = pair.split(ATTRIBUTE_DELIMITER);
+        String key = cleanEntry(entry[KEY_POSITION]);
+        String value = cleanEntry(entry[VALUE_POSITION]);
+        attributes.add(new Attribute<>(key, value));
+    }
+
     private static String[] cleanKeyValuePairs(final String json) {
         return json.trim()
-                .replace("{", "")
-                .replace("}", "")
+                .replace("{", EMPTY_STRING)
+                .replace("}", EMPTY_STRING)
                 .split(",");
     }
 
     private static String cleanEntry(final String pair) {
-        return pair.trim().replace("\"", "");
+        return pair.trim().replace("\"", EMPTY_STRING);
     }
 }
